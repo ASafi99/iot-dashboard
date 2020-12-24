@@ -1,55 +1,65 @@
-import { AppBar, Toolbar, Typography, makeStyles, Button } from "@material-ui/core";
+import { AppBar, Toolbar, makeStyles, Button } from "@material-ui/core";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
+import {MdDashboard, MdDevicesOther, MdLocationSearching} from "react-icons/md";
+import {FiUsers} from "react-icons/fi"
 
 export default function Header(props) {
 
     const headersData = [
 
         {
-            label: "Home",
-            href: "/home",
+            label: "Dashboard",
+            href: "/dashboard",
+            icon:  <MdDashboard/> ,
           },
         {
-          label: "My Account",
-          href: "/account",
+          label: "Devices",
+          href: "/devices",
+          icon: <MdDevicesOther/>,
         },
         {
-          label: "Log Out",
-          href: "/logout",
+          label: "Locations",
+          href: "/locations",
+          icon: <MdLocationSearching/>
+        },
+       
+        {
+
+        label: "Users",
+          href: "/users",
+          icon: <FiUsers/>,
         },
        
       ];
 
     const useStyles = makeStyles(() => ({
         header: {
-          backgroundColor: "lightBlue",
+          backgroundColor: "transparent",
           height: 50,
-          paddingRight: "79px",
-          paddingLeft: "118px",
+          marginLeft: 50,
+          marginRight:0,
+          marginTop:55,
+          color:"grey",
+          boxShadow: "0px 0px 0px 0px"
           
         },
-        logo: {
-          fontFamily: "Work Sans, sans-serif",
-          fontWeight: 600,
-          color: "#FFFEFE",
-          textAlign: "left",
-          paddingBottom: 10
-        },
-
+        
         menuButton: {
           fontFamily: "Open Sans, sans-serif",
           fontWeight: 700,
           size: "18px",
           paddingBottom: 10,
           marginLeft: "38px",
-         
+
+          '&:hover': {         
+            color:"lightBlue"
+          }
           
        },
 
        toolbar: {
         display: "flex",
-       justifyContent: "space-between",
       },
 
       }));
@@ -57,7 +67,7 @@ export default function Header(props) {
       const { header, logo, menuButton,toolbar} = useStyles();
 
       const headerButtons = () => {
-        return headersData.map(({ label, href }) => {
+        return headersData.map(({ label, href, icon }) => {
           return (
             <Button
               {...{
@@ -65,7 +75,9 @@ export default function Header(props) {
                 color: "inherit",
                 to: href,
                 component: RouterLink,
-                className: menuButton
+                className: menuButton,
+                startIcon:icon,
+                              
               }}
             >
               {label}
@@ -78,11 +90,8 @@ export default function Header(props) {
     <header>
       <AppBar className={header}>
           <Toolbar className={toolbar}>
-              <Typography className = {logo}>
-              IOT Dashboard
-                  </Typography>
-
-                <div>{headerButtons()}  </div>               
+                {headerButtons()}  
+                         
             </Toolbar>
                   
         </AppBar>

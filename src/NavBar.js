@@ -1,21 +1,25 @@
 import { AppBar, Toolbar, makeStyles, Button } from "@material-ui/core";
 import React from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link,  BrowserRouter, Route, Switch, HashRouter, NavLink } from "react-router-dom";
 import {MdDashboard, MdDevicesOther, MdLocationSearching} from "react-icons/md";
 import {FiUsers} from "react-icons/fi"
+import Dashboard from "./Dashboard";
+import App from "./App"
+import Devices from "./Devices.js"
 
-export default function Header(props) {
+
+export default function Header() {
 
     const headersData = [
 
         {
             label: "Dashboard",
-            href: "/dashboard",
+            href:  "/Dashboard",
             icon:  <MdDashboard/> ,
           },
         {
           label: "Devices",
-          href: "/devices",
+          href: "/Devices",
           icon: <MdDevicesOther/>,
         },
         {
@@ -40,8 +44,9 @@ export default function Header(props) {
           marginLeft: 50,
           marginRight:0,
           marginTop:55,
-          color:"grey",
-          boxShadow: "0px 0px 0px 0px"
+          color:"black",
+          boxShadow: "0px 0px 0px 0px",
+          borderBottom: "2px solid #d6d6d6"
           
         },
         
@@ -64,7 +69,7 @@ export default function Header(props) {
 
       }));
 
-      const { header, logo, menuButton,toolbar} = useStyles();
+      const { header, menuButton,toolbar} = useStyles();
 
       const headerButtons = () => {
         return headersData.map(({ label, href, icon }) => {
@@ -74,7 +79,7 @@ export default function Header(props) {
                 key: label,
                 color: "inherit",
                 to: href,
-                component: RouterLink,
+                component: NavLink,
                 className: menuButton,
                 startIcon:icon,
                               
@@ -86,15 +91,46 @@ export default function Header(props) {
         });
       };
 
+      const content = {
+        backgroundColor: "black",
+        padding: "50px", 
+        color:"blue",
+        size:"50px",
+
+        '& h1':{
+          color:"blue"
+      }
+        
+      }
+
+
+      
   return (
-    <header>
+  
+    <HashRouter>
+    <div>
+    
       <AppBar className={header}>
           <Toolbar className={toolbar}>
-                {headerButtons()}  
-                         
-            </Toolbar>
-                  
-        </AppBar>
-    </header>
-  );
+                
+                {headerButtons()}
+                            
+            </Toolbar>                 
+        </AppBar> 
+
+    <div className = {content}>
+    <Route exact path="/" component={Dashboard}/>
+    <Route path="/Dashboard" component={Dashboard}/> 
+    <Route path="/devices" component={Devices}/>     
+    </div>     
+    </div>
+  </HashRouter>  
+
+ 
+ )
 }
+
+
+
+
+

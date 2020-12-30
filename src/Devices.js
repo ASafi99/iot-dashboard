@@ -5,6 +5,7 @@ import { Modal } from './Modal';
 import styled from 'styled-components';
 
 const title = {
+
     right: "500px",
     marginTop: "-150px",
     position: "absolute",
@@ -16,18 +17,17 @@ const title = {
 }
 
 const pos = {
+
     right: "100px",
     marginTop: "150px",
     position: "absolute",
-    textAlign: "center",
+    width: "10%",
+    height: "8%",
+    
      
 }
 
-
-
 function Devices (){
-
-   
         
     const [showModal, setShowModal] = useState(false);
 
@@ -38,11 +38,10 @@ function Devices (){
 
        return(
 
-            <>
-           
+            <>           
             <h1 style = {title} >Devices </h1>
 
-            <Button onClick={openModal} variant="primary" style = {pos}>Add Device</Button>
+            <Button onClick={openModal} variant="primary" style = {pos}>Add device</Button>
             <Modal showModal={showModal} setShowModal={setShowModal} />
     
             </>

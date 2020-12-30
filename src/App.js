@@ -3,11 +3,19 @@ import Header from './Header';
 import NavBar from './NavBar';
 
 
-function App() {
+function App({handleLogOut}) {
+
+  
   return (
     <div className="App">
-      <Header/>
+      <Header handleLogOut={handleLogOut} />
         <NavBar/>
+        {/* <hr/>
+        <hr/>
+        <hr/>
+        <hr/>
+        <hr/>
+        <button style = {{size: "40px"}} onClick = {handleLogOut}>logout</button> */}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import firebase from 'firebase'
+require('firebase/auth')
 
     // Set the configuration for your app
     var config = {

@@ -3,13 +3,14 @@ import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 
 
-export default function Header(props) {
+export default function Header({handleLogOut}) {
 
     const headersData = [
 
         {
             label: "Home",
             href: "/home",
+
           },
         {
           label: "My Account",
@@ -17,7 +18,8 @@ export default function Header(props) {
         },
         {
           label: "Log Out",
-          href: "/logout",
+          href: "/Login",
+          onClick: handleLogOut,
         },
        
       ];
@@ -58,7 +60,7 @@ export default function Header(props) {
       const { header, logo, menuButton,toolbar} = useStyles();
 
       const headerButtons = () => {
-        return headersData.map(({ label, href }) => {
+        return headersData.map(({ label, href, onClick }) => {
           return (
             <Button
               {...{
@@ -66,7 +68,8 @@ export default function Header(props) {
                 color: "inherit",
                 to: href,
                 component: RouterLink,
-                className: menuButton
+                className: menuButton, 
+                onClick: onClick,
               }}
             >
               {label}
@@ -76,6 +79,7 @@ export default function Header(props) {
       };
 
   return (
+    <div>
     <header>
       <AppBar className={header}>
           <Toolbar className={toolbar}>
@@ -88,5 +92,6 @@ export default function Header(props) {
                   
         </AppBar>
     </header>
+    </div>
   );
 }

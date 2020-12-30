@@ -42,7 +42,7 @@ function Devices (){
            
             <h1 style = {title} >Devices </h1>
 
-            <Button onClick={openModal} variant="primary" style = {pos}>Create Device</Button>
+            <Button onClick={openModal} variant="primary" style = {pos}>Add Device</Button>
             <Modal showModal={showModal} setShowModal={setShowModal} />
     
             </>

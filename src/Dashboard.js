@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component} from 'react';
 import fire from './fire';
 
 class Dashboard extends Component {
@@ -6,21 +6,26 @@ class Dashboard extends Component {
     state = {
         temp: [],
         switch: [],
+        loading:false
    
     }
 
     componentWillMount(){
-        /* Create reference to messages in Firebase Database */
-        let switchRef = fire.database().ref('switch')
         let temps = []
-        switchRef.on("value", snap => {
-          /* Update React state when message is added at Firebase Database */
-           temps.push(snap.val())
-          this.setState({ temp: temps });
-        })
-      }
-    // Get a reference to the database service
-    
+        /* Create reference to messages in Firebase Database */
+
+        var docRef = fire.firestore().collection("devices")
+
+        this.setState({loading: true });
+        docRef.onSnapshot((querySnapshot) => {
+      
+      querySnapshot.forEach((doc) => {
+        temps.push(doc.data());
+      });
+      this.setState({temp: temps }); 
+      this.setState({loading:false});
+    })
+}
     render (){
 
         const body = {

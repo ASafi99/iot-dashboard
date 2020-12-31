@@ -13,6 +13,8 @@ function User() {
   const [passwordError, setPasswordError] = useState("");
   const [hasAccount, setHasAccount] = useState(false);
 
+ 
+
   const clearInputs = () => {
     setEmail("");
     setPassword("");
@@ -44,8 +46,9 @@ function User() {
   };
 
   const handleSignup = () => {
+    
     clearErrors();
-    fire
+     fire
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .catch((err) => {
@@ -58,7 +61,10 @@ function User() {
             setPasswordError(err.message);
             break;
           default:
+
         }
+
+     
       });
   };
 
@@ -72,7 +78,32 @@ function User() {
     fire.auth().onAuthStateChanged((user) => {
       clearInputs();
       if (user) {
+
+        var docRef = fire.firestore().collection("users") 
+
+        if(docRef.doc(user.uid).exists){
+          
+        }else{
+
+          docRef.doc(user.uid).set({
+            uid: user.uid,
+            email: user.email,
+          })
+  
+          docRef.doc(user.uid).update({
+  
+            devices:{
+                deviceName: "device1" ,
+                deviceType: "Sensor",
+                value: 312,
+              }
+              
+            })
+
+        }
+
         setUser(user);
+
       } else {
         setUser("");
       }

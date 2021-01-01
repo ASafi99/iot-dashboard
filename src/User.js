@@ -4,6 +4,7 @@ import Login from "./Login";
 import fire from "./fire";
 import "./User.css";
 import App from "./App";
+import UserID from "./userID";
 
 function User() {
   const [user, setUser] = useState("");
@@ -79,29 +80,6 @@ function User() {
       clearInputs();
       if (user) {
 
-        var docRef = fire.firestore().collection("users") 
-
-        if(docRef.doc(user.uid).exists){
-          
-        }else{
-
-          docRef.doc(user.uid).set({
-            uid: user.uid,
-            email: user.email,
-          })
-  
-          docRef.doc(user.uid).update({
-  
-            devices:{
-                deviceName: "device1" ,
-                deviceType: "Sensor",
-                value: 312,
-              }
-              
-            })
-
-        }
-
         setUser(user);
 
       } else {
@@ -119,7 +97,8 @@ function User() {
         
         {user ? (
           <>           
-              <App handleLogOut={handleLogOut} />  
+              <App handleLogOut={handleLogOut} /> 
+    
           </>
         ) : (
           <Login

@@ -26,7 +26,7 @@ export default function Header({handleLogOut}) {
 
     const useStyles = makeStyles(() => ({
         header: {
-          backgroundColor: "lightBlue",
+          backgroundColor: "deepskyblue",
           height: 50,
           paddingRight: "79px",
           paddingLeft: "118px",

@@ -1,7 +1,9 @@
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect, useCallback, useState} from 'react';
 import { useSpring, animated } from 'react-spring';
 import styled from 'styled-components';
 import { MdClose } from 'react-icons/md';
+import fire from "./fire";
+import userEvent from '@testing-library/user-event';
 
 const Background = styled.div`
   width: 100%;
@@ -15,7 +17,7 @@ const Background = styled.div`
 
 const ModalWrapper = styled.div`
   width: 700px;
-  height: 300px;
+  height: 250px;
   box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
   background: #fff;
   color: #000;
@@ -46,7 +48,34 @@ const ModalContent = styled.div`
   form{
       position: absolute;
       top: 20px;
+      left: 30px;
+      float:left;
 
+  }
+
+  h3{
+    float: left;
+    font-weight: bold;
+  }
+  input, label {
+    display:block;
+    float: left;
+  
+}
+
+  button {
+
+    width:100px;
+    float:left;
+    position: relative;
+    top: 20px;
+    background-color:deepskyblue;
+    border-radius: 10%;
+
+  }
+
+  button:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
   }
 `;
 
@@ -64,6 +93,34 @@ const CloseModalButton = styled(MdClose)`
 export const Modal = ({ showModal, setShowModal }) => {
   const modalRef = useRef();
 
+  const [deviceName, setDevice] = useState("");
+  const [user, setUser] = useState("");
+
+  // const handleChange= (e) => {
+        
+  //   const{deviceName} = e.target
+
+  //     setDevice(deviceName)
+  // }
+
+ 
+  const handleDeviceSave= () => {
+
+   
+    var rand = Math.floor(Math.random() * 101);  
+
+    var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+
+    docRef.update({
+      devices:{
+      [deviceName] :{
+        value: rand
+      }}
+      
+    }) 
+
+    setShowModal(prev => !prev)
+  }
   const animation = useSpring({
     config: {
       duration: 250
@@ -90,6 +147,7 @@ export const Modal = ({ showModal, setShowModal }) => {
 
   useEffect(
     () => {
+
       document.addEventListener('keydown', keyPress);
       return () => document.removeEventListener('keydown', keyPress);
     },
@@ -104,14 +162,24 @@ export const Modal = ({ showModal, setShowModal }) => {
             <ModalWrapper showModal={showModal}>
               <ModalContent>
               <form>
-                  <h1>Device Form</h1>
-                  <hr />
+                  <h3>Device Form</h3>
+                
+                  <div style = {{float: "left"}}>
+                  <label for = "deivceName"> Device Name </label>
                     <input
-                    placeholder="Device name"
+                    style = {{width: "600px", position : "relative"}}
+                    //placeholder="Device name"
+                    onChange={e => setDevice(e.target.value)}
                     type= "text" 
                     name = "deviceName"
+                    id = "deviceName"
                    />
-                    <hr />
+                  </div>
+
+                  <button type = "button" onClick ={handleDeviceSave}>Save</button>
+
+                  <h3>{deviceName}</h3>
+                   
                 </form>
 
               </ModalContent>

@@ -1,32 +1,46 @@
-import React, { Component} from 'react';
+import userEvent from '@testing-library/user-event';
+import React, { Component, useState, useEffect} from 'react';
 import fire from './fire';
+import user from './User.js'
 
-class Dashboard extends Component {
+  const Dashboard = () => {
+    
+    const [user, setUser] = useState("");
 
-    state = {
-        temp: [],
-        switch: [],
-        loading:false
-   
-    }
+    const [temp, setTemp] = useState([]);
+    
 
-    componentWillMount(){
-        let temps = []
+    useEffect(() => {   
+
+        var docRef = fire.firestore().collection("users").doc(user.uid)
+
+        setUser(fire.auth().currentUser);   
+             
         /* Create reference to messages in Firebase Database */
-
-        var docRef = fire.firestore().collection("devices")
-
-        this.setState({loading: true });
-        docRef.onSnapshot((querySnapshot) => {
+        let temps = []
+        const unsubscribe =  docRef.onSnapshot((doc) => {
+         
+         temps.push(doc.data().devices)
+         setTemp(temps); 
       
-      querySnapshot.forEach((doc) => {
-        temps.push(doc.data());
-      });
-      this.setState({temp: temps }); 
-      this.setState({loading:false});
     })
-}
-    render (){
+
+    return () => unsubscribe()
+
+    
+    }, [user.uid], )
+
+    
+        
+        
+ 
+// const authListener = () => {
+//     fire.auth().onAuthStateChanged((user) => {
+
+//         return " "+user.uid
+             
+//     })}
+    
 
         const body = {
             backgroundColor:"#696969"
@@ -48,7 +62,7 @@ class Dashboard extends Component {
             width: "100%",
         }
 
-        const {temp} = this.state
+       
         return(
 
         //     <div className = "body">
@@ -74,10 +88,12 @@ class Dashboard extends Component {
         // </div>
         // </div>
 
-        <h1 style = {h1}>{temp.map(temps => <div>{temps.value}°C</div>)}</h1>
+        <h1 style = {h1}>
+            {temp.map(temps => <div>{temps.device1.value}°C</div>)
+            }</h1>
         )
-        }
-    }
+     }
+    
 
     export default Dashboard
 

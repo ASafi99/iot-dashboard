@@ -5,30 +5,31 @@ import user from './User.js'
 
   const Dashboard = () => {
     
-    const [user, setUser] = useState("");
+ 
 
     const [temp, setTemp] = useState([]);
     
 
     useEffect(() => {   
 
-        var docRef = fire.firestore().collection("users").doc(user.uid)
+        var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
 
-        setUser(fire.auth().currentUser);   
+        
              
         /* Create reference to messages in Firebase Database */
         let temps = []
         const unsubscribe =  docRef.onSnapshot((doc) => {
          
-         temps.push(doc.data().devices)
+         temps.push(doc.data().device)
          setTemp(temps); 
       
     })
+    
 
     return () => unsubscribe()
 
     
-    }, [user.uid], )
+    }, )
 
     
         
@@ -89,7 +90,7 @@ import user from './User.js'
         // </div>
 
         <h1 style = {h1}>
-            {temp.map(temps => <div>{temps.device1.value}°C</div>)
+            {temp.map(temps => <div>{temps.value}°C</div>)
             }</h1>
         )
      }

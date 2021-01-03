@@ -94,8 +94,7 @@ export const Modal = ({ showModal, setShowModal }) => {
   const modalRef = useRef();
 
   const [deviceName, setDevice] = useState("");
-  const [user, setUser] = useState("");
-
+  
   // const handleChange= (e) => {
         
   //   const{deviceName} = e.target
@@ -111,14 +110,13 @@ export const Modal = ({ showModal, setShowModal }) => {
 
     var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
 
-    docRef.update({
-      devices:{
+    const object = {
       [deviceName] :{
-        value: rand
-      }}
-      
-    }) 
-
+        value: rand,
+        created: new Date()
+      }
+    }
+    docRef.update(object, {merge:true})
     setShowModal(prev => !prev)
   }
   const animation = useSpring({
@@ -193,4 +191,4 @@ export const Modal = ({ showModal, setShowModal }) => {
       ) : null}
     </>
   );
-};
+  }

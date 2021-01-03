@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal } from './Modal';
+import fire from './fire';
 import styled from 'styled-components';
+import Card from './SimpleCard'
+import {Grid} from "@material-ui/core";
 
 const title = {
 
@@ -27,23 +30,81 @@ const pos = {
      
 }
 
-function Devices (){
+function Devices (){ 
         
     const [showModal, setShowModal] = useState(false);
+    const [showDevices, setDevices] = useState([])
+   
+
+    useEffect(() => {   
+
+        var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+             
+        /* Create reference to messages in Firebase Database */
+      
+        
+        const unsubscribe =  docRef.onSnapshot((doc) => {
+
+           
+            
+        // devices.push(doc.data())
+         setDevices(Object.keys(doc.data())); 
+         
+    })  
+
+    // .then(() => {
+    //     console.log("test")
+     
+    // } )
+    
+
+    return () => unsubscribe()
+
+    },[setDevices])
 
     const openModal = () => {
       setShowModal(prev => !prev);
 
     }
 
+    const h1 = {
+        left: "0",
+        lineHeight: "80px",
+        marginTop: "-100px",
+        position: "absolute",
+        textAlign: "center",
+        top: "50%",
+        width: "100%",
+        zIndex: 0
+    }
+
+    const devices = () => {
+
+        return showDevices[0]
+    }
+
+    
+    
+
        return(
 
             <>           
-            <h1 style = {title} >Devices </h1>
+            <h2 style = {title} >Devices </h2>
 
             <Button onClick={openModal} variant="primary" style = {pos}>Add device</Button>
             <Modal showModal={showModal} setShowModal={setShowModal} />
-    
+            <h1 style = {h1}>
+            
+            </h1>
+    <Grid container>
+    <Grid item xs= {6}>
+            <Card device = {showDevices[0]}/>
+    </Grid>
+    <Grid item xs= {6}>
+            <Card device = {showDevices[1]}  />
+    </Grid>
+
+    </Grid> 
             </>
         )
     }   

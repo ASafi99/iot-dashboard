@@ -34,6 +34,8 @@ function Devices (){
         
     const [showModal, setShowModal] = useState(false);
     const [showDevices, setDevices] = useState([])
+    const [element, setElement] = useState([])
+   
    
 
     useEffect(() => {   
@@ -41,16 +43,21 @@ function Devices (){
         var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
              
         /* Create reference to messages in Firebase Database */
-      
+        var elements=[];
         
-        const unsubscribe =  docRef.onSnapshot((doc) => {
-
-           
-            
+         docRef.onSnapshot((doc) => {
+         
         // devices.push(doc.data())
          setDevices(Object.keys(doc.data())); 
-         
+
     })  
+
+      for(var i=0;i<showDevices.length;i++){
+             elements.push(<Grid item xs= {3}>
+                 <Card device = {showDevices[i]}/>
+              </Grid>)
+         }
+         setElement(elements)
 
     // .then(() => {
     //     console.log("test")
@@ -58,13 +65,16 @@ function Devices (){
     // } )
     
 
-    return () => unsubscribe()
-
-    },[setDevices])
+    },[showDevices])
 
     const openModal = () => {
       setShowModal(prev => !prev);
 
+    }
+
+    let deviceCards = () =>{
+
+       
     }
 
     const h1 = {
@@ -96,14 +106,10 @@ function Devices (){
             <h1 style = {h1}>
             
             </h1>
+            
+            
     <Grid container>
-    <Grid item xs= {6}>
-            <Card device = {showDevices[0]}/>
-    </Grid>
-    <Grid item xs= {6}>
-            <Card device = {showDevices[1]}  />
-    </Grid>
-
+      {element}
     </Grid> 
             </>
         )

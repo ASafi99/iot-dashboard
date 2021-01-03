@@ -5,20 +5,18 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import zIndex from '@material-ui/core/styles/zIndex';
 
 const useStyles = makeStyles({
   root: {
     minWidth:225,
     marginTop: "220px",
     position: "absolute",
-    marginLeft:"50px"
+    marginLeft:"50px",
+    zIndex: -10
 
   },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
+  
   title: {
     fontSize: 14,
   },

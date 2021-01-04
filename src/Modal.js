@@ -112,6 +112,7 @@ export const Modal = ({ showModal, setShowModal }) => {
 
     const object = {
       [deviceName] :{
+        deviceName: [deviceName],
         value: rand,
         created: new Date()
       }

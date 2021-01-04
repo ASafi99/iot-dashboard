@@ -5,7 +5,7 @@ require("firebase/firestore");
 require("firebase");
 // Required for side-effects
 require('firebase/auth')
-
+require('firebase-admin')
     // Set the configuration for your app
      var fire = firebase.initializeApp ( {
         apiKey: "AIzaSyBVJksDX51DyOaSiuquAq0mG3O_wO_ooVo",

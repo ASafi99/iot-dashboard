@@ -6,6 +6,10 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import zIndex from '@material-ui/core/styles/zIndex';
+import fire from './fire';
+import Widget from './widgets.js'
+
+
 
 const useStyles = makeStyles({
   root: {
@@ -27,32 +31,59 @@ const useStyles = makeStyles({
 
 export default function SimpleCard(props) {
   const classes = useStyles();
-  const [deviceState , setDeviceState] = useState(props)
+  const [deviceState , setDeviceState] = useState(props.device)
+  const [value ,setValue] = useState(props.currentDevice)
+  const [showPage, setPage] = useState (props.showPage)
+  
+  
+  const sendData = () => {
+    props.showPage(setPage(!showPage))
+
+    let elements =[]
+    fire.firestore().collection("users").doc(fire.auth().currentUser.uid).get().then((doc) =>{
+
+     elements.push(doc.data()[device].deviceName)
+
+     props.currentDevice(elements)
+    })
+}
+
 
   useEffect(() => {
-    setDeviceState(props);
-}, [props])
+    setDeviceState(props.device);
+    setPage(props.showPage)
 
 
+}, [props.device, props.showPage])
+
+  const{device} = props
   return (
     <Card className={classes.root}>
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
-        <div><li>{props.device}</li></div>
+        <div><li>{device}</li></div>
         </Typography>
         <Typography variant="h5" component="h2">
-       {props.device}
+       {device}
         </Typography>
         <Typography variant="body2" component="p">
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
+         
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Learn More</Button>
+        <Button onClick = {()=>{
+
+         sendData()
+
+         // updates[field_id] = fire.firestore().FieldValue.delete()
+      
+
+           }}>DELETE</Button>
+
       </CardActions>
     </Card>
+
+    
   );
 }
 

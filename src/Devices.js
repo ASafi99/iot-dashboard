@@ -6,6 +6,7 @@ import fire from './fire';
 import styled from 'styled-components';
 import Card from './SimpleCard'
 import {Grid} from "@material-ui/core";
+import Widget from './widgets.js'
 
 const title = {
 
@@ -35,12 +36,25 @@ function Devices (){
     const [showModal, setShowModal] = useState(false);
     const [showDevices, setDevices] = useState([])
     const [element, setElement] = useState([])
+    const [showPage, setPage] = useState (false)
+    const [currentDevice, setCurrentDevice] = useState([])
+
    
    
+    const page = (childData) => {
+        setPage(childData)
+  }
+
+  const device = (childData) => {
+    setCurrentDevice(childData)
+}
+
+  
 
     useEffect(() => {   
 
         var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+        var docRef1 = fire.firestore().collection("users").doc(fire.auth().currentUser.uid).device
              
         /* Create reference to messages in Firebase Database */
         var elements=[];
@@ -51,18 +65,15 @@ function Devices (){
          setDevices(Object.keys(doc.data())); 
 
     })  
+    
+      for(var i=0;i<showDevices.length;i++){    
 
-      for(var i=0;i<showDevices.length;i++){
              elements.push(<Grid item xs= {3}>
-                 <Card device = {showDevices[i]}/>
+                 <Card device = {showDevices[i]} showPage = {page} currentDevice = {device} />
               </Grid>)
+              
          }
          setElement(elements)
-
-    // .then(() => {
-    //     console.log("test")
-     
-    // } )
     
 
     },[showDevices])
@@ -72,10 +83,6 @@ function Devices (){
 
     }
 
-    let deviceCards = () =>{
-
-       
-    }
 
     const h1 = {
         left: "0",
@@ -97,7 +104,9 @@ function Devices (){
     
 
        return(
-
+        <div>
+        {!showPage ? (
+           
             <>           
             <h2 style = {title} >Devices </h2>
 
@@ -112,6 +121,12 @@ function Devices (){
       {element}
     </Grid> 
             </>
+        ) : (
+
+            <Widget currentDevice = {currentDevice} />
+        )}
+
+        </div>
         )
     }   
 

@@ -6,6 +6,7 @@ import {FiUsers} from "react-icons/fi"
 import Dashboard from "./Dashboard";
 import App from "./App"
 import Devices from "./Devices.js"
+import zIndex from "@material-ui/core/styles/zIndex";
 
 
 export default function Header() {
@@ -46,7 +47,8 @@ export default function Header() {
           marginTop:55,
           color:"black",
           boxShadow: "0px 0px 0px 0px",
-          borderBottom: "2px solid #d6d6d6"
+          borderBottom: "2px solid #d6d6d6",
+          zIndex: -10,
           
         },
         

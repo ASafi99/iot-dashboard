@@ -18,7 +18,6 @@ const useStyles = makeStyles({
     position: "absolute",
     marginLeft:"50px",
     zIndex: -10
-
   },
   
   title: {
@@ -32,7 +31,6 @@ const useStyles = makeStyles({
 export default function SimpleCard(props) {
   const classes = useStyles();
   const [deviceState , setDeviceState] = useState(props.device)
-  const [value ,setValue] = useState(props.currentDevice)
   const [showPage, setPage] = useState (props.showPage)
   
   
@@ -78,7 +76,7 @@ export default function SimpleCard(props) {
          // updates[field_id] = fire.firestore().FieldValue.delete()
       
 
-           }}>DELETE</Button>
+           }}>VIEW</Button>
 
       </CardActions>
     </Card>

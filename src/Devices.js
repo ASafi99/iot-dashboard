@@ -111,7 +111,7 @@ function Devices (){
             <h2 style = {title} >Devices </h2>
 
             <Button onClick={openModal} variant="primary" style = {pos}>Add device</Button>
-            <Modal showModal={showModal} setShowModal={setShowModal} />
+            <Modal showModal={showModal} setShowModal={setShowModal} isWidget ={true} />
             <h1 style = {h1}>
             
             </h1>

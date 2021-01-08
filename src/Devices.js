@@ -54,7 +54,7 @@ function Devices (){
     useEffect(() => {   
 
         var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
-        var docRef1 = fire.firestore().collection("users").doc(fire.auth().currentUser.uid).device
+
              
         /* Create reference to messages in Firebase Database */
         var elements=[];
@@ -95,12 +95,7 @@ function Devices (){
         zIndex: 0
     }
 
-    const devices = () => {
 
-        return showDevices[0]
-    }
-
-    
     
 
        return(
@@ -111,7 +106,7 @@ function Devices (){
             <h2 style = {title} >Devices </h2>
 
             <Button onClick={openModal} variant="primary" style = {pos}>Add device</Button>
-            <Modal showModal={showModal} setShowModal={setShowModal} isWidget ={true} />
+            <Modal showModal={showModal} setShowModal={setShowModal} isWidget ={true} currentDevice = {currentDevice} />
             <h1 style = {h1}>
             
             </h1>

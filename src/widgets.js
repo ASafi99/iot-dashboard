@@ -3,12 +3,33 @@ import React, { Component, useState, useEffect} from 'react';
 import fire from './fire';
 import { Button } from 'react-bootstrap';
 import { Modal } from './Modal';
+import { makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+
+const useStyles = makeStyles({
+  table: {
+    minWidth: 800,
+    
+  },
+});
 
 
 export default function Widget (props) {
 
     const [showModal, setShowModal] = useState(false);
 
+    const [obj, setObj] = useState({})
+
+    const [tempa, setTemp] = useState([]);
+
+    const {currentDevice} = props
+    
     const h1 = {
         left: "0",
         lineHeight: "200px",
@@ -32,29 +53,103 @@ export default function Widget (props) {
     
     }
 
-    const pos = {
+    const buttonPos = {
 
-        right: "100px",
-        marginTop: "150px",
-        position: "absolute",
-        width: "10%",
-        height: "8%",
         
+       
+        position: "absolute",
+        top:140,
+        right: 180,
+        width: "10%",
+        height: "8%",       
          
     }
+
+    // const getData = () => {
+
+    //     var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+
+    //     let temp = []
+    //     docRef.get((doc) => {
+         
+    //         temp.push(doc.data().device)
+    //         setTemp(temp); 
+    //    })
+      
+  
+    
+    useEffect(() => {   
+
+        var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+          
+        /* Create reference to messages in Firebase Database */
+        let temps = []
+        const unsubscribe =  docRef.onSnapshot((doc) => {
+            
+         temps.push(doc.data()[currentDevice])
+         setTemp(temps) 
+    })
+    
+
+    return () => unsubscribe()
+
+    
+    }, )
+
+  
     
     const openModal = () => {
         setShowModal(prev => !prev);
   
       }
+      const tablePos = {
+       position: "absolute",
+       top: 250,
+       width:900,
+       left:180
+    }
 
+      const classes = useStyles();
+     
     return(
         <div>
-    <h1 style = {title}>
-   Device : {props.currentDevice}</h1>
+    <h5 style = {title}>
+   Device : {currentDevice}
+   </h5>
 
-   <Button onClick={openModal} variant="primary" style = {pos}>Add widget</Button>
-            <Modal showModal={showModal} setShowModal={setShowModal} isWidget = {false} />
+    <div style = {tablePos} >
+    <TableContainer component={Paper}>
+      <Table className={classes.table} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Type</TableCell>
+            <TableCell align="right">Widget Name</TableCell>
+            <TableCell align="right">Current Value</TableCell>
+            <TableCell align="right">Unit</TableCell>
+            <TableCell align="right">Location</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {tempa.map((temps) => (
+            <TableRow key={temps.temp.widgetName}>
+              <TableCell component="th" scope="row">
+                {temps.temp.type}
+              </TableCell>
+              <TableCell align="right">{temps.temp.widgetName}</TableCell>
+              <TableCell align="right">{temps.temp.value}</TableCell>
+              <TableCell align="right">{temps.temp.unit}</TableCell>
+              <TableCell align="right">{temps.temp.location}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      </TableContainer>
+      </div>
+   
+
+
+   <Button onClick={openModal} variant="primary" style = {buttonPos}>Add widget</Button>
+    <Modal showModal={showModal} setShowModal={setShowModal} isWidget = {false} currentDevice = {currentDevice} />
     </div>
 
     )

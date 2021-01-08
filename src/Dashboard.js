@@ -13,9 +13,7 @@ import user from './User.js'
     useEffect(() => {   
 
         var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
-
-        
-             
+          
         /* Create reference to messages in Firebase Database */
         let temps = []
         const unsubscribe =  docRef.onSnapshot((doc) => {
@@ -66,31 +64,9 @@ import user from './User.js'
        
         return(
 
-        //     <div className = "body">
-        //     <div className="row">
-        //     <div className="col-sm-6"> 
-        //         <div className="card text-white bg-warning mb-3" style="max-width: 18rem;">
-        //             <div style="fontSize: 20px;" className="card-header">Temperature</div>
-        //             <div className="card-body">
-        //                 <h1 id="temperature" style="font-size: 75px;" className="card-title">{temp}°C</h1>
-        //                 <p className="card-text">Temperature expressed in Celsius degree.</p>
-        //             </div>
-        //         </div>
-        //     </div>
-        //     <div className="col-sm-6"> 
-        //         <div className="card text-white bg-primary mb-3" style="max-width: 18rem;">
-        //             <div style="font-size: 20px;" class="card-header">Humidity</div>
-        //             <div className="card-body">
-        //                 <h1 id="humidity" style="font-size: 75px;" className="card-title"><span>{temp}%</span></h1>
-        //                 <p className="card-text">Relative humidity, expressed in percentage.</p>
-        //             </div>
-        //         </div>
-        //     </div>
-        // </div>
-        // </div>
 
         <h1 style = {h1}>
-            {temp.map(temps => <div>{temps.value}°C</div>)
+            {temp.map(temps => <div>{temps.temp.value}°C</div>)
             }</h1>
         )
      }

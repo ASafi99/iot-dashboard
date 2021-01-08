@@ -110,11 +110,19 @@ const CloseModalButton = styled(MdClose)`
   z-index: 10;
 `;
 
-export const Modal = ({ showModal, setShowModal, isWidget }) => {
+export const Modal = (props) => {
   const modalRef = useRef();
+
+ const { showModal, setShowModal, isWidget,obj, currentDevice } = props
 
   const [deviceName, setDevice] = useState("");
   const [locationName, setLocation] = useState("");
+  const [widgetName, setWidget] = useState("");
+  const [datasource, setDatasource] = useState("");
+  const [maxValue, setMaxValue] = useState("");
+  const [unit, setUnit] = useState("");
+  
+  
   
   // const handleChange= (e) => {
         
@@ -127,19 +135,49 @@ export const Modal = ({ showModal, setShowModal, isWidget }) => {
   const handleDeviceSave= () => {
 
    
-    var rand = Math.floor(Math.random() * 101);  
-
+   
     var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
 
     const object = {
       [deviceName] :{
-        deviceName: [deviceName],
-        value: rand,
-        created: new Date()
-      }
+        deviceInfo: {
+        deviceName: deviceName,
+        created: new Date(),
+        
+      }}
+
+      
     }
+
     docRef.update(object, {merge:true})
     setShowModal(prev => !prev)
+  }
+
+  
+  const handleWidgetSave = () => {
+
+    var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+    var rand = Math.floor(Math.random() * 101);  
+
+    const object = {
+      
+        [currentDevice]:{
+          widgets:{
+          [widgetName]:{
+          widgetName: widgetName,
+          datasource: datasource,
+          location: locationName,
+          unit: unit,
+          maxValue: maxValue,
+          type: "sensor",
+          value: rand,
+        }}}
+      }
+      
+
+    docRef.set(object, {merge:true})
+    setShowModal(prev => !prev)
+    
   }
   const animation = useSpring({
     config: {
@@ -221,7 +259,7 @@ const test = {
                   <button type = "button" onClick ={handleDeviceSave}>Save</button>
                   </div>
                 </form>
-
+            
               </ModalContent>
               <CloseModalButton
                 aria-label='Close modal'
@@ -252,98 +290,45 @@ const test = {
           
             <Form.Group  controlId="exampleForm.ControlInput1">
               <Form.Label style={{fontSize:15}}>Widget Name</Form.Label>
-              <Form.Control size ='sm' placeholder="Enter widget name" />
+              <Form.Control size ='sm' placeholder="Enter widget name" onChange={e => setWidget(e.target.value)} />
             </Form.Group>
 
          
 
           <Form.Group controlId="formGridAddress1">
             <Form.Label style={{fontSize:15}} >Data Source</Form.Label>
-            <Form.Control size ='sm' placeholder="Enter data source" />
+            <Form.Control size ='sm' placeholder="Enter data source" onChange={e => setDatasource(e.target.value)}/>
           </Form.Group>
 
           <Form.Row>
             <Form.Group as={Col}  controlId="formGridCity">
               <Form.Label style={{fontSize:15}}>Unit</Form.Label>
-              <Form.Control size ='sm' placeholder = "Enter C,F, % etc" />
+              <Form.Control size ='sm' placeholder = "Enter C,F, % etc" onChange={e => setUnit(e.target.value)}/>
             </Form.Group>
 
             <Form.Group as={Col} controlId="formGridState">
               <Form.Label style={{fontSize:15}}>Location</Form.Label>
-              <Form.Control size ='sm' as="select" defaultValue="Choose...">
+              <Form.Control size ='sm' as="select" defaultValue="Choose..."onChange={e => setLocation(e.target.value)} >
                 <option>Choose...</option>
                 <option>Bedroom</option>
                 <option>Kitchen</option>
               </Form.Control>
             </Form.Group>
-
+            <br/>
             <Form.Group as={Col} controlId="formGridZip">
               <Form.Label style={{fontSize:15}}>Max Value</Form.Label>
-              <Form.Control size ='sm' />
+              <Form.Control size ='sm' onChange={e => setMaxValue(e.target.value)} />
             </Form.Group>
           </Form.Row>
 
-          <Button variant="primary" type="submit">
-            Submit
+          <Button variant="primary" type="button" onClick ={handleWidgetSave}>
+            Save 
           </Button>
-</Form>
-              {/* <form>
-             
-              <h3>Widget Form</h3>
-              <ColoredLine color="lightGrey" />
-                
-                  <div style = {{float: "left"}}>
-                  <h5 style = {{top:15, position: "relative"}}>Sensor Widget Form</h5>
-                  <label style = {{ position: "relvative",marginTop:10, marginRight:500}} for = "widgetName"> Widget Name </label>
-                    <input
-                    style = {{width: "700px"}}
-                    placeholder="Enter widget name"
-                    //onChange={e => setDevice(e.target.value)}
-                    type= "text" 
-                    name = "widgetName"
-                    id = "widgetName"
-                   />
+            </Form>
+            
 
-                <label style = {{ position: "relvative",marginTop:10, marginRight:500}} for = "datasource">DataSource ID</label>
-                    <input
-                    style = {{width: "700px"}}
-                    placeholder="Enter datasource ID"
-                    //onChange={e => setDevice(e.target.value)}
-                    type= "text" 
-                    name = "datasource"
-                    id = "datasource"
-                   /> 
-                 
-                   
-              <label style = {{ position: "relvative",marginTop:20, marginRight: 700}} for = "favDest">Location: </label>
-                    <select 
-                    style = {{width:100}}
-                    //value = {this.state.favDest}
-                    name = "favDest"
-                    onChange = {e => setLocation(e.target.value)}
-                    >
-                    <option value="">Location</option>
-                    <option value="England">England</option>
-                    <option value="Spain">Spain</option>
-                    <option value="France">France</option>
-                    <option value="Germany">Germany</option>
-                </select>
-
-                <label style = {{ verticalAlign:"top", marginRight: 20}} for = "unit">Unit</label>
-                    <input
-                    placeholder="Enter Unit"
-                    //onChange={e => setDevice(e.target.value)}
-                    type= "text" 
-                    name = "unit"
-                    id = "unit"
-                   />
-                   </div>
-                 
-                  
-                </form> */}
-
-              </ModalContent>
-              <CloseModalButton
+      </ModalContent>
+   <CloseModalButton
                 aria-label='Close modal'
                 onClick={() => setShowModal(prev => !prev)}
               />

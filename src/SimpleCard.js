@@ -40,7 +40,7 @@ export default function SimpleCard(props) {
     let elements =[]
     fire.firestore().collection("users").doc(fire.auth().currentUser.uid).get().then((doc) =>{
 
-     elements.push(doc.data()[device].deviceName)
+     elements.push(doc.data()[device].deviceInfo.deviceName)
 
      props.currentDevice(elements)
     })

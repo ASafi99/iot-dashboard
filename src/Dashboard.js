@@ -66,7 +66,7 @@ import user from './User.js'
 
 
         <h1 style = {h1}>
-            {temp.map(temps => <div>{temps.temp.value}°C</div>)
+            {temp.map(temps => <div>{temps.widgets.temp.value}°C</div>)
             }</h1>
         )
      }

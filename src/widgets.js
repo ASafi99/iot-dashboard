@@ -29,6 +29,9 @@ export default function Widget (props) {
     const [tempa, setTemp] = useState([]);
 
     const {currentDevice} = props
+
+    const [isData, setData] = useState(false);
+
     
     const h1 = {
         left: "0",
@@ -86,8 +89,10 @@ export default function Widget (props) {
         let temps = []
         const unsubscribe =  docRef.onSnapshot((doc) => {
             
-         temps.push(doc.data()[currentDevice])
-         setTemp(temps) 
+              temps.push(doc.data()[currentDevice].widgets)
+         
+              setTemp(temps)           
+         
     })
     
 
@@ -96,7 +101,8 @@ export default function Widget (props) {
     
     }, )
 
-  
+    
+
     
     const openModal = () => {
         setShowModal(prev => !prev);
@@ -115,8 +121,14 @@ export default function Widget (props) {
         <div>
     <h5 style = {title}>
    Device : {currentDevice}
+   
+   
    </h5>
-
+   {isData ? (
+   <h1 style = {h1}>
+            No data to display
+   </h1>
+   ): (
     <div style = {tablePos} >
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
@@ -130,23 +142,26 @@ export default function Widget (props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {tempa.map((temps) => (
-            <TableRow key={temps.temp.widgetName}>
+        {tempa.map(temps =>
+
+        Object.values(temps).map(obj =>(
+      
+          <TableRow key={obj.widgetName}>
               <TableCell component="th" scope="row">
-                {temps.temp.type}
+                {obj.type}
               </TableCell>
-              <TableCell align="right">{temps.temp.widgetName}</TableCell>
-              <TableCell align="right">{temps.temp.value}</TableCell>
-              <TableCell align="right">{temps.temp.unit}</TableCell>
-              <TableCell align="right">{temps.temp.location}</TableCell>
+              <TableCell align="right">{obj.widgetName}</TableCell>
+              <TableCell align="right">{obj.value}</TableCell>
+              <TableCell align="right">{obj.unit}</TableCell>
+              <TableCell align="right">{obj.location}</TableCell>
             </TableRow>
-          ))}
+          )))}
         </TableBody>
       </Table>
       </TableContainer>
       </div>
    
-
+   )}
 
    <Button onClick={openModal} variant="primary" style = {buttonPos}>Add widget</Button>
     <Modal showModal={showModal} setShowModal={setShowModal} isWidget = {false} currentDevice = {currentDevice} />

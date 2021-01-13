@@ -1,11 +1,21 @@
 import React, { useRef, useEffect, useCallback, useState} from 'react';
-import { Form, Button, Col } from 'react-bootstrap';
+import { Form, Col } from 'react-bootstrap';
 import { useSpring, animated } from 'react-spring';
 import styled from 'styled-components';
 import { MdClose } from 'react-icons/md';
+import { FaTemperatureHigh } from 'react-icons/fa';
 import fire from "./fire";
+import { Button } from '@material-ui/core/';
+import {IoIosSwitch} from "react-icons/io";
+import { makeStyles } from '@material-ui/core/styles';
+import DeleteIcon from '@material-ui/icons/Delete';
 
-import userEvent from '@testing-library/user-event';
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
 
 const Background = styled.div`
   width: 100%;
@@ -32,7 +42,7 @@ const ModalWrapper = styled.div`
 
 const WidgetModalWrapper = styled.div`
   width: 700px;
-  height: 440px;
+  height: 460px;
   box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
   background: #fff;
   color: #000;
@@ -54,11 +64,24 @@ const ModalContent = styled.div`
   p {
     margin-bottom: 1rem;
   }
-  button {
+
+
+  .save {
     padding: 10px 24px;
     background: #141414;
     color: #fff;
     border: none;
+    width:100px;
+    float:left;
+    position: relative;
+    top: 20px;
+    background-color:deepskyblue;
+    border-radius: 10%;
+
+  }
+
+  .save:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
   }
   form{
       position: absolute;
@@ -81,22 +104,15 @@ select, label {
 
 }
 
-
+.test{
+  float: left;
+}
 h5{
   float: left;
   font-weight: bold;
 }
-  button {
-    width:100px;
-    float:left;
-    position: relative;
-    top: 20px;
-    background-color:deepskyblue;
-    border-radius: 10%;
-  }
-  button:hover {
-    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-  }
+  
+  
 `;
 
 const CloseModalButton = styled(MdClose)`
@@ -121,6 +137,8 @@ export const Modal = (props) => {
   const [datasource, setDatasource] = useState("");
   const [maxValue, setMaxValue] = useState("");
   const [unit, setUnit] = useState("");
+  const [switchForm, setForm] = useState(false);
+
   
   
   
@@ -225,17 +243,10 @@ export const Modal = (props) => {
     />
 );
 
-const test = {
-
-  bottom:50
-  
-  
-      
-}
-
+const classes = useStyles();
   
   return (
-    <div>
+    <>
     {isWidget ? (
     
       showModal ? (
@@ -256,7 +267,7 @@ const test = {
                     name = "deviceName"
                     id = "deviceName"
                    />
-                  <button type = "button" onClick ={handleDeviceSave}>Save</button>
+                  <button className = "save" type = "button" onClick ={handleDeviceSave}>Save</button>
                   </div>
                 </form>
             
@@ -278,16 +289,24 @@ const test = {
         <Background onClick={closeModal} ref={modalRef}>
           <animated.div style={animation}>
             <WidgetModalWrapper showModal={showModal}>
-              <ModalContent>
-
-              
+              <ModalContent>        
               <Form>
+                
               <h5>Widget Form</h5>
+              {/* <span style = {{right:160, top: 20,position: "absolute", fontSize:10}}>Choose Widget Type:</span> */}
+              <label style = {{position :"absolute", top:20}}>Choose widget type</label>
+              <Button variant = "contained"  color= "primary"  className={classes.button} startIcon = {<FaTemperatureHigh/>} onClick = {()=> setForm(true)} style = {{width:100, position:"relative", top:40, right: 110}}>Sensor</Button>
+              <Button variant = "contained"  color= "primary"  className={classes.button} startIcon = {<IoIosSwitch/>} onClick = {()=> setForm(false)} style = {{width:100, position:"relative", top:40, right: 110}}>Switch</Button>
+            
+                         
               <ColoredLine color="lightGrey" />
-              <h5 style = {{top:15, position: "relative"}}>Sensor Widget</h5>
+             
+          {switchForm ? (
+           <>
+             <h5 style = {{top:15, position: "relative"}}>Sensor Widget</h5>
               <br/>
               <br/>
-          
+              
             <Form.Group  controlId="exampleForm.ControlInput1">
               <Form.Label style={{fontSize:15}}>Widget Name</Form.Label>
               <Form.Control size ='sm' placeholder="Enter widget name" onChange={e => setWidget(e.target.value)} />
@@ -306,6 +325,11 @@ const test = {
               <Form.Control size ='sm' placeholder = "Enter C,F, % etc" onChange={e => setUnit(e.target.value)}/>
             </Form.Group>
 
+            <Form.Group as={Col} controlId="formGridZip">
+              <Form.Label style={{fontSize:15}}>Max Value</Form.Label>
+              <Form.Control size ='sm' onChange={e => setMaxValue(e.target.value)} />
+            </Form.Group>
+
             <Form.Group as={Col} controlId="formGridState">
               <Form.Label style={{fontSize:15}}>Location</Form.Label>
               <Form.Control size ='sm' as="select" defaultValue="Choose..."onChange={e => setLocation(e.target.value)} >
@@ -315,17 +339,60 @@ const test = {
               </Form.Control>
             </Form.Group>
             <br/>
-            <Form.Group as={Col} controlId="formGridZip">
-              <Form.Label style={{fontSize:15}}>Max Value</Form.Label>
-              <Form.Control size ='sm' onChange={e => setMaxValue(e.target.value)} />
+            
+          </Form.Row>
+          
+          </>
+
+           ):(
+             <>
+              <h5 style = {{top:15, position: "relative"}}>Switch Widget</h5>
+              <br/>
+              <br/>
+            <Form.Group  controlId="exampleForm.ControlInput1">
+              <Form.Label style={{fontSize:15}}>Widget Name</Form.Label>
+              <Form.Control size ='sm' placeholder="Enter widget name" onChange={e => setWidget(e.target.value)} />
             </Form.Group>
+    
+            <Form.Row>
+          <Form.Group controlId="formGridAddress1">
+            <Form.Label style={{fontSize:15}} >Data Source</Form.Label>
+            <Form.Control size ='sm' placeholder="Enter data source" onChange={e => setDatasource(e.target.value)}/>
+          </Form.Group>
+
+          <Form.Group as={Col} >
+              <Form.Label style={{fontSize:15}}>Initial Value</Form.Label>
+              <Form.Control size ='sm'  placeholder = "Enter either 1 or 0"  onChange={e => setMaxValue(e.target.value)} />
+            </Form.Group>
+
           </Form.Row>
 
-          <Button variant="primary" type="button" onClick ={handleWidgetSave}>
-            Save 
-          </Button>
-            </Form>
-            
+          <Form.Row style = {{position: "relative", bottom: 10}}>
+            <Form.Group as={Col}  controlId="formGridCity">
+              <Form.Label style={{fontSize:15}}>ON Text</Form.Label>
+              <Form.Control size ='sm' placeholder = "Enter Text to display when switch is ON" onChange={e => setUnit(e.target.value)}/>
+            </Form.Group>
+
+          
+            <Form.Group as={Col} controlId="formGridZip">
+              <Form.Label style={{fontSize:15}}>OFF text</Form.Label>
+              <Form.Control size ='sm'  placeholder = "Enter Text to display when switch is OFF"  onChange={e => setMaxValue(e.target.value)} />
+            </Form.Group>
+        
+         
+          <Form.Group as={Col} controlId="formGridState">
+              <Form.Label style={{fontSize:15}}>Location</Form.Label>
+              <Form.Control size ='sm' as="select" defaultValue="Choose..."onChange={e => setLocation(e.target.value)} >
+                <option>Choose...</option>
+                <option>Bedroom</option>
+                <option>Kitchen</option>
+              </Form.Control>
+            </Form.Group>
+            </Form.Row>
+          </>
+            )}
+           <button className = "save" type = "button" style = {{position: "static"}} onClick ={handleWidgetSave}>Save</button>
+            </Form>           
 
       </ModalContent>
    <CloseModalButton
@@ -338,6 +405,6 @@ const test = {
       ) : null
     
     )}
-    </div>
+    </>
   );
   }

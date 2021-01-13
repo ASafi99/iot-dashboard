@@ -4,9 +4,9 @@ import { Link,  BrowserRouter, Route, Switch, HashRouter, NavLink } from "react-
 import {MdDashboard, MdDevicesOther, MdLocationSearching} from "react-icons/md";
 import {FiUsers} from "react-icons/fi"
 import Dashboard from "./Dashboard";
-import App from "./App"
+
 import Devices from "./Devices.js"
-import zIndex from "@material-ui/core/styles/zIndex";
+
 
 
 export default function Header() {

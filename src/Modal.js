@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useCallback, useState} from 'react';
-import { Form, Col } from 'react-bootstrap';
+import { Form, Col,  } from 'react-bootstrap';
 import { useSpring, animated } from 'react-spring';
 import styled from 'styled-components';
 import { MdClose } from 'react-icons/md';
@@ -131,29 +131,26 @@ export const Modal = (props) => {
 
  const { showModal, setShowModal, isWidget,obj, currentDevice } = props
 
+ const [switchForm, setForm] = useState(false);
+ const [validated, setValidated] = useState(false);
+
   const [deviceName, setDevice] = useState("");
   const [locationName, setLocation] = useState("");
   const [widgetName, setWidget] = useState("");
   const [datasource, setDatasource] = useState("");
   const [maxValue, setMaxValue] = useState("");
   const [unit, setUnit] = useState("");
-  const [switchForm, setForm] = useState(false);
 
+  const [onText, setONText] = useState("");
+  const [offText, setOFFText] = useState("");
+  const [value, setValue] = useState("");
   
-  
-  
-  // const handleChange= (e) => {
-        
-  //   const{deviceName} = e.target
-
-  //     setDevice(deviceName)
-  // }
-
- 
+   
   const handleDeviceSave= () => {
 
-   
-   
+  if(!deviceName){
+
+  }else{
     var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
 
     const object = {
@@ -169,10 +166,24 @@ export const Modal = (props) => {
 
     docRef.update(object, {merge:true})
     setShowModal(prev => !prev)
-  }
 
-  
-  const handleWidgetSave = () => {
+    setDevice("")
+  }}
+
+  const submit = (event) => {
+
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    setValidated(true);
+  }
+  const handleSensorWidgetSave = () => {
+
+    if(!widgetName || !datasource || !locationName || !unit || !maxValue ){
+
+    }else{
 
     var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
     var rand = Math.floor(Math.random() * 101);  
@@ -187,15 +198,61 @@ export const Modal = (props) => {
           location: locationName,
           unit: unit,
           maxValue: maxValue,
-          type: "sensor",
+          type: "Sensor",
           value: rand,
+        }}}
+      }
+    
+
+    docRef.set(object, {merge:true})
+    setShowModal(prev => !prev)
+
+    setWidget("")
+    setDatasource("")
+    setLocation("")
+    setUnit("")
+    setMaxValue("")
+    setValidated(false);
+    }
+  }
+
+  const handleSwitchWidgetSave = () => {
+
+    var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+
+    if(!widgetName || !datasource || !locationName || !onText || !offText || !value ){
+
+    }else{
+
+    const object = {
+      
+        [currentDevice]:{
+          widgets:{
+          [widgetName]:{
+          widgetName: widgetName,
+          datasource: datasource,
+          location: locationName,
+          value: value,
+          onText: onText,
+          offText: offText,
+          type: "Switch",
+          
         }}}
       }
       
 
     docRef.set(object, {merge:true})
     setShowModal(prev => !prev)
-    
+
+    setWidget("")
+    setDatasource("")
+    setLocation("")
+    setValue("")
+    setONText("")
+    setOFFText("")
+
+    setValidated(false);
+    }
   }
   const animation = useSpring({
     config: {
@@ -254,20 +311,22 @@ const classes = useStyles();
           <animated.div style={animation}>
             <ModalWrapper showModal={showModal}>
               <ModalContent>
-              <form>
+              <form > 
                   <h3>Device Form</h3>
                 
                   <div style = {{float: "left"}}>
                   <label for = "deivceName"> Device Name </label>
                     <input
+                    required
                     style = {{width: "600px", position : "relative"}}
                     //placeholder="Device name"
                     onChange={e => setDevice(e.target.value)}
                     type= "text" 
+                    placeholder = "Enter device name"
                     name = "deviceName"
                     id = "deviceName"
                    />
-                  <button className = "save" type = "button" onClick ={handleDeviceSave}>Save</button>
+                  <input className = "save" type = "submit" value ="Save" onClick = {handleDeviceSave} ></input>
                   </div>
                 </form>
             
@@ -290,7 +349,7 @@ const classes = useStyles();
           <animated.div style={animation}>
             <WidgetModalWrapper showModal={showModal}>
               <ModalContent>        
-              <Form>
+              <Form  noValidate validated={validated} onSubmit={submit} >
                 
               <h5>Widget Form</h5>
               {/* <span style = {{right:160, top: 20,position: "absolute", fontSize:10}}>Choose Widget Type:</span> */}
@@ -307,40 +366,41 @@ const classes = useStyles();
               <br/>
               <br/>
               
-            <Form.Group  controlId="exampleForm.ControlInput1">
+            <Form.Group >
               <Form.Label style={{fontSize:15}}>Widget Name</Form.Label>
-              <Form.Control size ='sm' placeholder="Enter widget name" onChange={e => setWidget(e.target.value)} />
+              <Form.Control style = {{maxWidth:600}} required size ='sm' placeholder="Enter widget name" onChange={e => setWidget(e.target.value)} />
             </Form.Group>
 
          
 
-          <Form.Group controlId="formGridAddress1">
+          <Form.Group >
             <Form.Label style={{fontSize:15}} >Data Source</Form.Label>
-            <Form.Control size ='sm' placeholder="Enter data source" onChange={e => setDatasource(e.target.value)}/>
+            <Form.Control required size ='sm' style = {{maxWidth:600}} placeholder="Enter data source" onChange={e => setDatasource(e.target.value)}/>
           </Form.Group>
-
-          <Form.Row>
-            <Form.Group as={Col}  controlId="formGridCity">
+         
+          <Form.Row style = {{float: "left", maxWidth:600}}>
+            <Form.Group as={Col} >
               <Form.Label style={{fontSize:15}}>Unit</Form.Label>
-              <Form.Control size ='sm' placeholder = "Enter C,F, % etc" onChange={e => setUnit(e.target.value)}/>
+              <Form.Control required size ='sm' placeholder = "Enter C,F, % etc" onChange={e => setUnit(e.target.value)}/>
             </Form.Group>
 
-            <Form.Group as={Col} controlId="formGridZip">
+            <Form.Group as={Col} >
               <Form.Label style={{fontSize:15}}>Max Value</Form.Label>
-              <Form.Control size ='sm' onChange={e => setMaxValue(e.target.value)} />
+              <Form.Control required size ='sm' onChange={e => setMaxValue(e.target.value)} />
             </Form.Group>
 
-            <Form.Group as={Col} controlId="formGridState">
+            <Form.Group as={Col}>
               <Form.Label style={{fontSize:15}}>Location</Form.Label>
-              <Form.Control size ='sm' as="select" defaultValue="Choose..."onChange={e => setLocation(e.target.value)} >
-                <option>Choose...</option>
+              <Form.Control required  size ='sm' as="select" defaultValue="Choose..."onChange={e => setLocation(e.target.value)} >
+                <option value = "">Choose...</option>
                 <option>Bedroom</option>
                 <option>Kitchen</option>
               </Form.Control>
             </Form.Group>
-            <br/>
             
+
           </Form.Row>
+          <input  onClick= {handleSensorWidgetSave} className = "save" type = "submit" style = {{position: "static"}} value = "Save"></input>
           
           </>
 
@@ -349,49 +409,56 @@ const classes = useStyles();
               <h5 style = {{top:15, position: "relative"}}>Switch Widget</h5>
               <br/>
               <br/>
-            <Form.Group  controlId="exampleForm.ControlInput1">
+            <Form.Group style={{maxWidth:600}} >
               <Form.Label style={{fontSize:15}}>Widget Name</Form.Label>
-              <Form.Control size ='sm' placeholder="Enter widget name" onChange={e => setWidget(e.target.value)} />
+              <Form.Control   required size ='sm' placeholder="Enter widget name" onChange={e => setWidget(e.target.value)} />
             </Form.Group>
     
-            <Form.Row>
-          <Form.Group controlId="formGridAddress1">
+            <Form.Row style={{float: "left"}}>
+          <Form.Group>
             <Form.Label style={{fontSize:15}} >Data Source</Form.Label>
-            <Form.Control size ='sm' placeholder="Enter data source" onChange={e => setDatasource(e.target.value)}/>
+            <Form.Control required size ='sm' placeholder="Enter data source" onChange={e => setDatasource(e.target.value)}/>
           </Form.Group>
 
           <Form.Group as={Col} >
               <Form.Label style={{fontSize:15}}>Initial Value</Form.Label>
-              <Form.Control size ='sm'  placeholder = "Enter either 1 or 0"  onChange={e => setMaxValue(e.target.value)} />
+              <Form.Control required size ='sm' as = "select" defaultVlaue = "Choose..."  onChange={e => setValue(e.target.value)} >
+              <option value = "">Choose...</option>
+                <option>0</option>
+                <option>1</option>
+                </Form.Control>
             </Form.Group>
 
-          </Form.Row>
-
-          <Form.Row style = {{position: "relative", bottom: 10}}>
-            <Form.Group as={Col}  controlId="formGridCity">
-              <Form.Label style={{fontSize:15}}>ON Text</Form.Label>
-              <Form.Control size ='sm' placeholder = "Enter Text to display when switch is ON" onChange={e => setUnit(e.target.value)}/>
-            </Form.Group>
-
-          
-            <Form.Group as={Col} controlId="formGridZip">
-              <Form.Label style={{fontSize:15}}>OFF text</Form.Label>
-              <Form.Control size ='sm'  placeholder = "Enter Text to display when switch is OFF"  onChange={e => setMaxValue(e.target.value)} />
-            </Form.Group>
-        
-         
-          <Form.Group as={Col} controlId="formGridState">
+            <Form.Group as={Col}>
               <Form.Label style={{fontSize:15}}>Location</Form.Label>
-              <Form.Control size ='sm' as="select" defaultValue="Choose..."onChange={e => setLocation(e.target.value)} >
-                <option>Choose...</option>
+              <Form.Control required size ='sm' as="select" defaultValue="Choose..."onChange={e => setLocation(e.target.value)} >
+                <option value = "">Choose...</option>
                 <option>Bedroom</option>
                 <option>Kitchen</option>
               </Form.Control>
             </Form.Group>
+
+          </Form.Row>
+
+          <Form.Row style = {{position: "relative", bottom: 10, float: "left", width:600}}>
+            <Form.Group as={Col} >
+              <Form.Label style={{fontSize:15}}>ON Text</Form.Label>
+              <Form.Control required size ='sm' placeholder = "Enter Text to display when switch is ON" onChange={e => setONText(e.target.value)}/>
+            </Form.Group>
+
+          
+            <Form.Group as={Col} >
+              <Form.Label style={{fontSize:15}}>OFF text</Form.Label>
+              <Form.Control required size ='sm'  placeholder = "Enter Text to display when switch is OFF"  onChange={e => setOFFText(e.target.value)} />
+            </Form.Group>
+        
+  
             </Form.Row>
+
+            <input  onClick= {handleSwitchWidgetSave} className = "save" type = "submit" style = {{position: "static"}} value = "Save"></input>
           </>
             )}
-           <button className = "save" type = "button" style = {{position: "static"}} onClick ={handleWidgetSave}>Save</button>
+           
             </Form>           
 
       </ModalContent>

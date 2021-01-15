@@ -58,8 +58,6 @@ export default function Widget (props) {
 
     const buttonPos = {
 
-        
-       
         position: "absolute",
         top:140,
         right: 180,
@@ -86,23 +84,30 @@ export default function Widget (props) {
         var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
           
         /* Create reference to messages in Firebase Database */
+
         let temps = []
         const unsubscribe =  docRef.onSnapshot((doc) => {
             
               temps.push(doc.data()[currentDevice].widgets)
          
-              setTemp(temps)           
+              setTemp(temps)      
+              
          
     })
     
-
     return () => unsubscribe()
-
     
     }, )
 
+    const removeField = (widgetName) => {
+
     
 
+      var docRef = fire.firestore().collection('users').doc('random');
+      
+      let hi = docRef.set({ }); 
+
+    }
     
     const openModal = () => {
         setShowModal(prev => !prev);
@@ -120,7 +125,7 @@ export default function Widget (props) {
     return(
         <div>
     <h5 style = {title}>
-   Device : {currentDevice}
+   Device : <p style = {{display: "inline", backgroundColor:"blue", color:"white", borderRadius: "6px"}}>{currentDevice}</p>
    
    
    </h5>
@@ -137,7 +142,6 @@ export default function Widget (props) {
             <TableCell>Type</TableCell>
             <TableCell align="right">Widget Name</TableCell>
             <TableCell align="right">Current Value</TableCell>
-            <TableCell align="right">Unit</TableCell>
             <TableCell align="right">Location</TableCell>
           </TableRow>
         </TableHead>
@@ -152,8 +156,8 @@ export default function Widget (props) {
               </TableCell>
               <TableCell align="right">{obj.widgetName}</TableCell>
               <TableCell align="right">{obj.value}</TableCell>
-              <TableCell align="right">{obj.unit}</TableCell>
               <TableCell align="right">{obj.location}</TableCell>
+              <TableCell align="right"><button style = {{backgroundColor: "red", color: "white" , borderRadius: "10px", width: 80}} onClick = {removeField(obj.widgetName)}>Delete</button></TableCell>
             </TableRow>
           )))}
         </TableBody>

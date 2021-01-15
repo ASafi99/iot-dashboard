@@ -38,6 +38,8 @@ function Devices (){
     const [element, setElement] = useState([])
     const [showPage, setPage] = useState (false)
     const [currentDevice, setCurrentDevice] = useState([])
+    //const [created, setCreated] = useState([])
+
 
    
    
@@ -47,7 +49,9 @@ function Devices (){
 
   const device = (childData) => {
     setCurrentDevice(childData)
+    
 }
+
 
   
 
@@ -63,20 +67,22 @@ function Devices (){
          
         // devices.push(doc.data())
          setDevices(Object.keys(doc.data())); 
-
+        
     })  
+
     
       for(var i=0;i<showDevices.length;i++){    
 
+
              elements.push(<Grid item xs= {3}>
-                 <Card device = {showDevices[i]} showPage = {page} currentDevice = {device} />
+                 <Card device = {showDevices[i]} showPage = {page} currentDevice = {device}  />
               </Grid>)
               
          }
          setElement(elements)
     
 
-    },[showDevices])
+    },[ showDevices])
 
     const openModal = () => {
       setShowModal(prev => !prev);

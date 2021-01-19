@@ -159,7 +159,11 @@ export const Modal = (props) => {
         deviceName: deviceName,
         created: new Date(),
         
-      }}
+      },
+      widgets:{
+
+      }
+    }
 
       
     }

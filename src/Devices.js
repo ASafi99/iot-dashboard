@@ -36,8 +36,8 @@ function Devices (){
     const [showModal, setShowModal] = useState(false);
     const [showDevices, setDevices] = useState([])
     const [element, setElement] = useState([])
-    const [showPage, setPage] = useState (false)
-    const [currentDevice, setCurrentDevice] = useState([])
+    const [showPage, setPage] = useState (true)
+    const [currentDevice, setCurrentDevice] = useState("")
     //const [created, setCreated] = useState([])
 
 
@@ -73,16 +73,15 @@ function Devices (){
     
       for(var i=0;i<showDevices.length;i++){    
 
-
              elements.push(<Grid item xs= {3}>
-                 <Card device = {showDevices[i]} showPage = {page} currentDevice = {device}  />
+                 <Card key = {i} device = {showDevices[i]} showPage = {page} currentDevice = {device}  />
               </Grid>)
               
          }
          setElement(elements)
     
 
-    },[ showDevices])
+    },[showDevices,currentDevice])
 
     const openModal = () => {
       setShowModal(prev => !prev);
@@ -105,29 +104,30 @@ function Devices (){
     
 
        return(
-        <div>
-        {!showPage ? (
-           
-            <>           
+        <>
+        {showPage ? (
+
+            
+           <>           
             <h2 style = {title} >Devices </h2>
 
             <Button onClick={openModal} variant="primary" style = {pos}>Add device</Button>
             <Modal showModal={showModal} setShowModal={setShowModal} isWidget ={true} currentDevice = {currentDevice} />
             <h1 style = {h1}>
             
-            </h1>
-            
+            </h1>    
             
     <Grid container>
       {element}
     </Grid> 
             </>
         ) : (
-
+            <>
             <Widget currentDevice = {currentDevice} />
+            </>
         )}
 
-        </div>
+        </>
         )
     }   
 

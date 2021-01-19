@@ -9,8 +9,6 @@ import zIndex from '@material-ui/core/styles/zIndex';
 import fire from './fire';
 
 
-
-
 const useStyles = makeStyles({
   root: {
     minWidth:225,
@@ -31,32 +29,22 @@ const useStyles = makeStyles({
 
 export default function SimpleCard(props) {
   const classes = useStyles();
-  const [deviceState , setDeviceState] = useState(props.device)
-  const [showPage, setPage] = useState (props.showPage)
+
  const [created, setCreated] = useState(props.created)
+ 
+
+ const{device} = props
   
-  
-  const sendData = () => {
-    props.showPage(setPage(!showPage))
+  const sendData = (device) => {
+    props.showPage(false)
 
-    let elements =[]
-    
-    fire.firestore().collection("users").doc(fire.auth().currentUser.uid).get().then((doc) =>{
-
-     elements.push(doc.data()[device].deviceInfo.deviceName)
-
-     props.currentDevice(elements)
-     
-     
-    })
+    props.currentDevice(device)
+      
 }
 
 
   useEffect(() => {
-    setDeviceState(props.device);
-    setPage(props.showPage)
   
-
     let elements1 =[]
 
     var options = {
@@ -77,9 +65,9 @@ export default function SimpleCard(props) {
      
     })
 
-}, [props.device, props.showPage])
+},[device])
 
-  const{device} = props
+  
   return (
     <Card className={classes.root}>
       <CardContent>
@@ -94,7 +82,8 @@ export default function SimpleCard(props) {
       </CardContent>
       <CardActions>
         <Button onClick = {()=>{
-         sendData()
+          console.log(device)
+         sendData(device)
            }}>VIEW</Button>
 
       </CardActions>

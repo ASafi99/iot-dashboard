@@ -12,6 +12,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+
 const useStyles = makeStyles({
   table: {
     minWidth: 800,
@@ -88,24 +89,29 @@ export default function Widget (props) {
         let temps = []
         const unsubscribe =  docRef.onSnapshot((doc) => {
             
+            
               temps.push(doc.data()[currentDevice].widgets)
-         
+              if(Object.keys(doc.data()[currentDevice].widgets).length>0){
+
               setTemp(temps)      
-              
-         
+              setData(true)
+
+               }else{
+               setData(false)
+              }
     })
     
     return () => unsubscribe()
     
-    }, )
+    }, [currentDevice,tempa])
 
     const removeField = (widgetName) => {
 
     
 
-      var docRef = fire.firestore().collection('users').doc('random');
+      var docRef = fire.firestore().collection('users').doc(fire.auth().currentUser.uid);
       
-      let hi = docRef.set({ }); 
+     
 
     }
     
@@ -129,7 +135,7 @@ export default function Widget (props) {
    
    
    </h5>
-   {isData ? (
+   {!isData ? (
    <h1 style = {h1}>
             No data to display
    </h1>
@@ -146,7 +152,7 @@ export default function Widget (props) {
           </TableRow>
         </TableHead>
         <TableBody>
-        {tempa.map(temps =>
+        {tempa && tempa.map(temps =>
 
         Object.values(temps).map(obj =>(
       
@@ -157,7 +163,9 @@ export default function Widget (props) {
               <TableCell align="right">{obj.widgetName}</TableCell>
               <TableCell align="right">{obj.value}</TableCell>
               <TableCell align="right">{obj.location}</TableCell>
-              <TableCell align="right"><button style = {{backgroundColor: "red", color: "white" , borderRadius: "10px", width: 80}} onClick = {removeField(obj.widgetName)}>Delete</button></TableCell>
+              <TableCell align="right">
+                <button style = {{backgroundColor: "red", color: "white" , borderRadius: "10px", width: 80}} onClick = {() => removeField(obj.widgetName)}>Delete</button>
+                </TableCell>
             </TableRow>
           )))}
         </TableBody>
@@ -168,9 +176,8 @@ export default function Widget (props) {
    )}
 
    <Button onClick={openModal} variant="primary" style = {buttonPos}>Add widget</Button>
-    <Modal showModal={showModal} setShowModal={setShowModal} isWidget = {false} currentDevice = {currentDevice} />
+   <Modal showModal={showModal} setShowModal={setShowModal} isWidget = {false} currentDevice = {currentDevice} />
     </div>
 
     )
 }
-

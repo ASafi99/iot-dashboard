@@ -1,4 +1,5 @@
 import React from "react"
+import ButtonLoader from "./ButtonLoader";
 
 const Login = (props) => {
 
@@ -6,7 +7,9 @@ const Login = (props) => {
 
     return(
         <section className="login">
+            
             <div className= "loginContainer">
+            <h4>Welcome to IOT Dashboard</h4>
                 <label>Username</label>
                 <input 
                 type = "text" 
@@ -30,7 +33,8 @@ const Login = (props) => {
                     {hasAccount ?(
 
                         <>
-                        <button onClick = {handleLogin}>Sign In</button>
+                        {/* <button onClick = {handleLogin}>Sign In</button> */}
+                        <ButtonLoader handleLogin = {handleLogin} text = "Signing In" text1 = "Sign In"/>
                         <p>Don't have an account? 
                             <span onClick = {() => setHasAccount (!hasAccount)}>Sign Up </span>
                         </p>
@@ -39,7 +43,7 @@ const Login = (props) => {
                     ) :(
 
                         <>
-                        <button onClick = {handleSignup}>Sign Up</button>
+                         <ButtonLoader handleLogin = {handleSignup} text = "Signing Up" text1 = "Sign Up"/>
                         <p>Have an account ? 
                             <span onClick = {() => setHasAccount (!hasAccount)}>Sign in</span>
                         </p>

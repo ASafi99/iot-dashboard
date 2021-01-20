@@ -3,7 +3,6 @@ import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal } from './Modal';
 import fire from './fire';
-import styled from 'styled-components';
 import Card from './SimpleCard'
 import {Grid} from "@material-ui/core";
 import Widget from './widgets.js'

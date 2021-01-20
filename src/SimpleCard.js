@@ -82,7 +82,8 @@ export default function SimpleCard(props) {
       </CardContent>
       <CardActions>
         <Button onClick = {()=>{
-          console.log(device)
+          
+         console.log(device)
          sendData(device)
            }}>VIEW</Button>
 

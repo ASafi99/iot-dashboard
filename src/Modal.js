@@ -382,15 +382,21 @@ const classes = useStyles();
             <Form.Control required size ='sm' style = {{maxWidth:600}} placeholder="Enter data source" onChange={e => setDatasource(e.target.value)}/>
           </Form.Group>
          
-          <Form.Row style = {{float: "left", maxWidth:600}}>
+          <Form.Row style = {{float: "left", width:650}}>
+    
             <Form.Group as={Col} >
-              <Form.Label style={{fontSize:15}}>Unit</Form.Label>
-              <Form.Control required size ='sm' placeholder = "Enter C,F, % etc" onChange={e => setUnit(e.target.value)}/>
+              <Form.Label style={{fontSize:15}}>Max Value</Form.Label>
+              <Form.Control required size ='sm' type = "number" onChange={e => setMaxValue(e.target.value)} />
             </Form.Group>
 
             <Form.Group as={Col} >
-              <Form.Label style={{fontSize:15}}>Max Value</Form.Label>
-              <Form.Control required size ='sm' onChange={e => setMaxValue(e.target.value)} />
+              <Form.Label style={{fontSize:15}}>Unit</Form.Label>
+              <Form.Control required size ='sm' as = "select" defaultValue = "Choose..." onChange={e => setUnit(e.target.value)}>
+              <option value = "">Choose...</option>
+                <option>%</option>
+                <option>°C</option>
+                <option>°F</option>
+                </Form.Control>
             </Form.Group>
 
             <Form.Group as={Col}>
@@ -401,8 +407,6 @@ const classes = useStyles();
                 <option>Kitchen</option>
               </Form.Control>
             </Form.Group>
-            
-
           </Form.Row>
           <input  onClick= {handleSensorWidgetSave} className = "save" type = "submit" style = {{position: "static"}} value = "Save"></input>
           
@@ -459,7 +463,7 @@ const classes = useStyles();
   
             </Form.Row>
 
-            <input  onClick= {handleSwitchWidgetSave} className = "save" type = "submit" style = {{position: "static"}} value = "Save"></input>
+            <input  onClick= {handleSwitchWidgetSave} className = "save" type = "submit" style = {{position: "static",}} value = "Save"></input>
           </>
             )}
            

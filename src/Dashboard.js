@@ -1,12 +1,9 @@
-import userEvent from '@testing-library/user-event';
 import React, { Component, useState, useEffect} from 'react';
 import fire from './fire';
-import user from './User.js'
+import Card from './Card';
 
   const Dashboard = () => {
     
- 
-
     const [temp, setTemp] = useState([]);
     
 
@@ -23,11 +20,10 @@ import user from './User.js'
       
     })
     
-
     return () => unsubscribe()
 
     
-    }, )
+    }, [])
 
     
         
@@ -39,17 +35,7 @@ import user from './User.js'
 //         return " "+user.uid
              
 //     })}
-    
 
-        const body = {
-            backgroundColor:"#696969"
-        }
-        const card = {
-            margin: "0 auto", 
-            float: "none", 
-            marginBottom: "10px",
-            marginTop: "50px"
-        }
 
         const h1 = {
             left: "0",
@@ -64,10 +50,11 @@ import user from './User.js'
        
         return(
 
-
-        <h1 style = {h1}>
-            {temp.map(temps => <div>{temps.widgets.temp.value}°C</div>)
-            }</h1>
+            <>
+       
+        
+          <Card temp = {temp}  />
+          </>
         )
      }
     

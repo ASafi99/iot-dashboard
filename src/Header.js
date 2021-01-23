@@ -30,6 +30,7 @@ export default function Header({handleLogOut}) {
           height: 50,
           paddingRight: "79px",
           paddingLeft: "118px",
+          zIndex:0,
           
         },
         logo: {
@@ -79,7 +80,7 @@ export default function Header({handleLogOut}) {
       };
 
   return (
-    <div>
+    <>
     <header>
       <AppBar className={header}>
           <Toolbar className={toolbar}>
@@ -87,11 +88,11 @@ export default function Header({handleLogOut}) {
               IOT Dashboard
                   </Typography>
 
-                <div>{headerButtons()}  </div>               
+                <div>{headerButtons()} </div>               
             </Toolbar>
                   
         </AppBar>
     </header>
-    </div>
+    </>
   );
 }

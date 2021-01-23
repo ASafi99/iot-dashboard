@@ -12,9 +12,9 @@ import fire from './fire';
 const useStyles = makeStyles({
   root: {
     minWidth:225,
-    marginTop: "220px",
+    marginTop: "210px",
     position: "absolute",
-    marginLeft:"50px",
+    marginLeft:"30px",
     zIndex: -10,
     maxWidth:230
   },

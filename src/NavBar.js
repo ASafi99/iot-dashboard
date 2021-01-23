@@ -40,15 +40,16 @@ export default function Header() {
 
     const useStyles = makeStyles(() => ({
         header: {
-          backgroundColor: "transparent",
+          backgroundColor: "white",
           height: 50,
-          marginLeft: 50,
+         // marginLeft: 50,
           marginRight:0,
-          marginTop:55,
+          marginTop:50,
           color:"black",
           boxShadow: "0px 0px 0px 0px",
           borderBottom: "2px solid #d6d6d6",
-          zIndex: -10,
+          position:"fixed",
+          zIndex:0
           
         },
         
@@ -67,6 +68,7 @@ export default function Header() {
 
        toolbar: {
         display: "flex",
+        
       },
 
       }));
@@ -115,7 +117,7 @@ export default function Header() {
       <AppBar className={header}>
           <Toolbar className={toolbar}>
                 
-                {headerButtons()}
+                <div>{headerButtons()}</div>
                             
             </Toolbar>                 
         </AppBar> 

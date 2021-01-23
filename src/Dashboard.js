@@ -1,10 +1,14 @@
 import React, { Component, useState, useEffect} from 'react';
 import fire from './fire';
 import Card from './Card';
+import {CardDeck, Container, Row, Col} from "react-bootstrap";
 
-  const Dashboard = () => {
+  export default function Dashboard () {
     
     const [temp, setTemp] = useState([]);
+    const [isData, setData] = useState(false);
+    const [switchData, setSwitchData] = useState([]);
+    const [devices, setDevices] = useState([])
     
 
     useEffect(() => {   
@@ -12,30 +16,36 @@ import Card from './Card';
         var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
           
         /* Create reference to messages in Firebase Database */
-        let temps = []
+       // let temps = []
+        let temps1 =[]
         const unsubscribe =  docRef.onSnapshot((doc) => {
-         
-         temps.push(doc.data().device)
-         setTemp(temps); 
-      
-    })
+
+          setDevices(Object.keys(doc.data())); 
+
+          devices.map(da => {
+            if(Object.keys(doc.data()[da].widgets).length>0){
+            temps1.push(doc.data()[da].widgets)
+            }
+            
+            })
+
+            if(temps1.length>0){
+
+              setSwitchData(temps1)
+              setData(true)
+    
+              }else{
+    
+              setData(false)
+    
+              }
+          })
+
     
     return () => unsubscribe()
 
-    
-    }, [])
-
-    
-        
-        
- 
-// const authListener = () => {
-//     fire.auth().onAuthStateChanged((user) => {
-
-//         return " "+user.uid
-             
-//     })}
-
+    }, [devices])
+  
 
         const h1 = {
             left: "0",
@@ -45,25 +55,39 @@ import Card from './Card';
             textAlign: "center",
             top: "50%",
             width: "100%",
+            opacity: "50%",
         }
+       
+             let switchCards = switchData.map(data =>
 
+              Object.values(data).map(obj => {
+      return (
+        <Col sm="4" style = {{margin:0, marginTop: 30}} >
+          <Card key = {obj.id} temp = {obj.deviceName}  widgetName = {obj.widgetName} onText = {obj.onText} offText = {obj.offText} /> 
+        </Col>
+      )
+              }
+        ))
        
         return(
-
-            <>
-       
-        
-          <Card temp = {temp}  />
-          </>
-        )
-     }
+          <>
+          {!isData ? (
+            <h1 style = {h1}>
+                     No data to display
+            </h1>
+            ): (
+          <Container fluid style = {{margin:0, marginTop: 150}}>
+          <Row style = {{}} >
+          <CardDeck style={{ minWidth: "100%", maxWidth:"100%", float: "left"}}>
+            {switchCards}
+          </CardDeck>
+          </Row>
+          </Container>
     
+            )}
+            </> 
+        )
 
-    export default Dashboard
-
-  
-  
-        
       
-
-        
+      }
+     

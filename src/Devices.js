@@ -17,17 +17,16 @@ const title = {
     width: "100%",
     fontSize:"30px",
 
+
 }
 
 const pos = {
 
     right: "100px",
-    marginTop: "150px",
+    marginTop: "140px",
     position: "absolute",
     width: "10%",
     height: "8%",
-    
-     
 }
 
 function Devices (){ 
@@ -38,9 +37,6 @@ function Devices (){
     const [showPage, setPage] = useState (true)
     const [currentDevice, setCurrentDevice] = useState("")
     //const [created, setCreated] = useState([])
-
-
-   
    
     const page = (childData) => {
         setPage(childData)
@@ -57,13 +53,9 @@ function Devices (){
     useEffect(() => {   
 
         var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
-
-             
-        /* Create reference to messages in Firebase Database */
+     /* Create reference to messages in Firebase Database */
         var elements=[];
-        
          docRef.onSnapshot((doc) => {
-         
         // devices.push(doc.data())
          setDevices(Object.keys(doc.data())); 
         
@@ -89,6 +81,7 @@ function Devices (){
 
 
     const h1 = {
+
         left: "0",
         lineHeight: "80px",
         marginTop: "-100px",
@@ -104,18 +97,15 @@ function Devices (){
 
        return(
         <>
-        {showPage ? (
-
-            
-           <>           
+        {showPage ? (          
+             <>           
             <h2 style = {title} >Devices </h2>
 
             <Button onClick={openModal} variant="primary" style = {pos}>Add device</Button>
             <Modal showModal={showModal} setShowModal={setShowModal} isWidget ={true} currentDevice = {currentDevice} />
             <h1 style = {h1}>
             
-            </h1>    
-            
+            </h1>     
     <Grid container>
       {element}
     </Grid> 

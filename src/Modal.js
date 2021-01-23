@@ -8,7 +8,6 @@ import fire from "./fire";
 import { Button } from '@material-ui/core/';
 import {IoIosSwitch} from "react-icons/io";
 import { makeStyles } from '@material-ui/core/styles';
-import DeleteIcon from '@material-ui/icons/Delete';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -25,6 +24,7 @@ const Background = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 0;
 `;
 
 const ModalWrapper = styled.div`
@@ -204,6 +204,7 @@ export const Modal = (props) => {
           maxValue: maxValue,
           type: "Sensor",
           value: rand,
+          deviceName: [currentDevice],
         }}}
       }
     
@@ -240,6 +241,7 @@ export const Modal = (props) => {
           onText: onText,
           offText: offText,
           type: "Switch",
+          deviceName: [currentDevice],
           
         }}}
       }

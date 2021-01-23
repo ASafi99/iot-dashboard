@@ -5,7 +5,6 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
 
   export default function Dashboard () {
     
-    const [temp, setTemp] = useState([]);
     const [isData, setData] = useState(false);
     const [switchData, setSwitchData] = useState([]);
     const [devices, setDevices] = useState([])
@@ -18,7 +17,7 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
         /* Create reference to messages in Firebase Database */
        // let temps = []
         let temps1 =[]
-        const unsubscribe =  docRef.onSnapshot((doc) => {
+        docRef.onSnapshot((doc) => {
 
           setDevices(Object.keys(doc.data())); 
 
@@ -33,16 +32,16 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
 
               setSwitchData(temps1)
               setData(true)
-    
+        
               }else{
-    
+        
               setData(false)
-    
+        
               }
-          })
+        })
 
-    
-    return () => unsubscribe()
+
+   
 
     }, [devices])
   

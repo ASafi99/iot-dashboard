@@ -22,6 +22,6 @@ This section contains the current requirements for the system made in this proje
 - [X] Display data from Sensor widgets in real time
 - [X] Display data from Switch widgets in real time
 - [X] Be able to change a Switch widgets state to on/off which must reflect to the respective device.
-- [] Time-based trigger functionality for switch widget
+-  Time-based trigger functionality for switch widget
 - [] Alarm functionality for sensors (once max allowable value is exceeded)
 - [] Time-series graph widget for sensors types

@@ -19,10 +19,9 @@ This section contains the current requirements for the system made in this proje
 	- [X] Sensor
 	- [] (More to be added)
 - [X] Display details of the widgets added by the user 
-- [] Display data from Sensor widgets in real time
-- [] Display data from Switch widgets in real time
-- [] Be able to change a Switch widgets state to on/off which must reflect to the respective device.
+- [X] Display data from Sensor widgets in real time
+- [X] Display data from Switch widgets in real time
+- [X] Be able to change a Switch widgets state to on/off which must reflect to the respective device.
 - [] Time-based trigger functionality for switch widget
 - [] Alarm functionality for sensors (once max allowable value is exceeded)
-- [] Allow the user to select additional widgets (color picker, range sliders, gauge meters etc.)
-- [] Time-series graphs for sensors
+- [] Time-series graph widget for sensors types

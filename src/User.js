@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Login from "./Login";
-import fire from "./fire";
+import {fire} from "./fire";
 import "./User.css";
 import App from "./App";
 
@@ -47,7 +47,6 @@ function User() {
   };
 
   const handleSignup = () => {
-    
     clearErrors();
      fire
       .auth()

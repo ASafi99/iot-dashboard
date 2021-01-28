@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal } from './Modal';
-import fire from './fire';
+import {fire} from './fire';
 import Card from './SimpleCard'
 import {Grid} from "@material-ui/core";
 import Widget from './widgets.js'
@@ -80,21 +80,6 @@ function Devices (){
     }
 
 
-    const h1 = {
-
-        left: "0",
-        lineHeight: "80px",
-        marginTop: "-100px",
-        position: "absolute",
-        textAlign: "center",
-        top: "50%",
-        width: "100%",
-        zIndex: 0
-    }
-
-
-    
-
        return(
         <>
         {showPage ? (          
@@ -102,10 +87,7 @@ function Devices (){
             <h2 style = {title} >Devices </h2>
 
             <Button onClick={openModal} variant="primary" style = {pos}>Add device</Button>
-            <Modal showModal={showModal} setShowModal={setShowModal} isWidget ={true} currentDevice = {currentDevice} />
-            <h1 style = {h1}>
-            
-            </h1>     
+            <Modal showModal={showModal} setShowModal={setShowModal} isWidget ={true} currentDevice = {currentDevice} /> 
     <Grid container>
       {element}
     </Grid> 

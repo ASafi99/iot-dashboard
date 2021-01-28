@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect} from 'react';
-import fire from './fire';
+import {fire} from './fire';
 import Card from './Card';
 import {CardDeck, Container, Row, Col} from "react-bootstrap";
 
@@ -56,28 +56,44 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
             width: "100%",
             opacity: "50%",
         }
+
+        const title = {
+
+          right: "500px",
+          marginTop: "-150px",
+          position: "absolute",
+          textAlign: "center",
+          top: "50%",
+          width: "100%",
+          fontSize:"30px",
+          zIndex: -1
+      
+      
+      }
        
              let switchCards = switchData.map(data =>
 
               Object.values(data).map(obj => {
       return (
         <Col sm="4" style = {{margin:0, marginTop: 30}} >
-          <Card key = {obj.id} temp = {obj.deviceName}  widgetName = {obj.widgetName} onText = {obj.onText} offText = {obj.offText} /> 
+          <Card key = {obj.id} temp = {obj.deviceName}  widgetName = {obj.widgetName} onText = {obj.onText} offText = {obj.offText} type = {obj.type} maxValue = {obj.maxValue} value = {obj.value} unit = {obj.unit} /> 
         </Col>
       )
               }
         ))
+
        
         return(
           <>
+          <h2 style = {title} >Dashboard </h2>
           {!isData ? (
             <h1 style = {h1}>
                      No data to display
             </h1>
             ): (
-          <Container fluid style = {{margin:0, marginTop: 150}}>
+          <Container fluid style = {{margin:0, marginTop: 150 }}>
           <Row style = {{}} >
-          <CardDeck style={{ minWidth: "100%", maxWidth:"100%", float: "left"}}>
+          <CardDeck style={{ minWidth: "100%", maxWidth:"100%",float: "left"}}>
             {switchCards}
           </CardDeck>
           </Row>

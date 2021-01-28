@@ -16,9 +16,17 @@ require('firebase-admin')
         messagingSenderId: "1074827536202",
         appId: "1:1074827536202:web:663708905b3befa52043b3",
         measurementId: "G-88RXNW35SS"
-     })
+     }, "primary")
+
+     var otherApp = firebase.initializeApp({
+      apiKey: "AIzaSyBVJksDX51DyOaSiuquAq0mG3O_wO_ooVo",
+      appId: "1:1074827536202:web:663708905b3befa52043b3",
+      projectId: "iot-dashboard-a6a92",
+      databaseURL: "https://iot-dashboard-a6a92-default-rtdb.europe-west1.firebasedatabase.app",
+      storageBucket:  "iot-dashboard-a6a92.appspot.com",
+    });
 
       
-      
+     //var secondaryApp = firebase.initializeApp(otherApp);
 
-      export default fire;
+      export {fire, otherApp};

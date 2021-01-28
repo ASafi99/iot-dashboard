@@ -4,10 +4,11 @@ import { useSpring, animated } from 'react-spring';
 import styled from 'styled-components';
 import { MdClose } from 'react-icons/md';
 import { FaTemperatureHigh } from 'react-icons/fa';
-import fire from "./fire";
+import {fire, otherApp} from "./fire";
 import { Button } from '@material-ui/core/';
 import {IoIosSwitch} from "react-icons/io";
 import { makeStyles } from '@material-ui/core/styles';
+import "./User.css";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -126,10 +127,16 @@ const CloseModalButton = styled(MdClose)`
   z-index: 10;
 `;
 
+
 export const Modal = (props) => {
   const modalRef = useRef();
 
- const { showModal, setShowModal, isWidget,obj, currentDevice } = props
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+ const { showModal, setShowModal, isWidget,obj, currentDevice, isUser } = props
 
  const [switchForm, setForm] = useState(false);
  const [validated, setValidated] = useState(false);
@@ -144,8 +151,51 @@ export const Modal = (props) => {
   const [onText, setONText] = useState("");
   const [offText, setOFFText] = useState("");
   const [value, setValue] = useState("");
-  
-   
+
+  const clearErrors = () => {
+    setEmailError("");
+    setPasswordError("");
+  };
+
+  const clearInputs = () => {
+    setEmail("");
+    setPassword("");
+  };
+
+  const signUpWithEmailAndPassword = () => {
+    clearErrors();
+     otherApp
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+       .then(cred => {   
+        
+          fire.firestore().collection('users').doc(cred.user.uid).set({ 
+        email: [email]
+
+          })
+
+        setShowModal(prev => !prev)
+        alert("You have successfully added user: "+ email)
+        clearInputs()
+
+        }).catch((err) => {
+          switch (err.code) {
+            case "auth/email-already-in-use":
+            case "auth/invalid-email":
+              setEmailError(err.message);
+              break;
+            case "auth/weak-password":
+              setPasswordError(err.message);
+              break;
+            default:
+              
+          }
+         
+        });
+    };
+    
+       
+
   const handleDeviceSave= () => {
 
   if(!deviceName){
@@ -262,8 +312,10 @@ export const Modal = (props) => {
   }
   const animation = useSpring({
     config: {
-      duration: 250
+      duration: 250,
+      zIndex:100,
     },
+   
     opacity: showModal ? 1 : 0,
     transform: showModal ? `translateY(0%)` : `translateY(-100%)`
   });
@@ -310,7 +362,43 @@ const classes = useStyles();
   
   return (
     <>
-    {isWidget ? (
+    {isUser ? (
+      showModal ? (
+       <Background onClick={closeModal} ref={modalRef}>
+       <animated.div style={animation}>
+         <WidgetModalWrapper showModal={showModal}>
+           <ModalContent>        
+           <Form  noValidate validated={validated} onSubmit={submit} >
+             
+           <h2>Add User</h2>
+
+           <Form.Group >
+              <Form.Label style={{fontSize:25}}>User Name</Form.Label>
+              <Form.Control style = {{maxWidth:600}} required size ='lg' placeholder="Enter user name" value = {email} onChange={e => setEmail(e.target.value)} />
+              <p style = {{color: "red", position:"absolute", top:150}} >{emailError}</p>
+            </Form.Group>
+
+          <Form.Group style = {{position:"relative",  padding:0, margin: 0, top:40}}>
+            <Form.Label style={{fontSize:25}} >Password</Form.Label>
+            <Form.Control required size ='lg' style = {{maxWidth:600}} placeholder="Enter password" value = {password} onChange={e => setPassword(e.target.value)}/>
+            <p style = {{color: "red", position:"absolute", top:200}}>{passwordError}</p>
+          </Form.Group>
+
+          <input style = {{width:200, height:70, position: "absolute", top: 350}} className = "save" type = "submit" value ="Add User" onClick = {signUpWithEmailAndPassword} ></input>
+
+           </Form>           
+
+</ModalContent>
+<CloseModalButton
+          aria-label='Close modal'
+          onClick={() => setShowModal(prev => !prev)}
+        />
+      </WidgetModalWrapper>
+    </animated.div>
+  </Background>
+      ):null
+    ):(
+    isWidget ? (
     
       showModal ? (
         <Background onClick={closeModal} ref={modalRef}>
@@ -481,7 +569,7 @@ const classes = useStyles();
         </Background>
       ) : null
     
-    )}
+    ))})
     </>
   );
   }

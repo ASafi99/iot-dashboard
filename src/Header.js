@@ -30,7 +30,7 @@ export default function Header({handleLogOut}) {
           height: 50,
           paddingRight: "79px",
           paddingLeft: "118px",
-          zIndex:0,
+          zIndex:-1,
           
         },
         logo: {

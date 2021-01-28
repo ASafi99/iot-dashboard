@@ -4,6 +4,7 @@ import { Link,  BrowserRouter, Route, Switch, HashRouter, NavLink } from "react-
 import {MdDashboard, MdDevicesOther, MdLocationSearching} from "react-icons/md";
 import {FiUsers} from "react-icons/fi"
 import Dashboard from "./Dashboard";
+import Users from "./Users";
 
 import Devices from "./Devices.js"
 
@@ -49,7 +50,7 @@ export default function Header() {
           boxShadow: "0px 0px 0px 0px",
           borderBottom: "2px solid #d6d6d6",
           position:"fixed",
-          zIndex:0
+          zIndex:-1
           
         },
         
@@ -126,6 +127,7 @@ export default function Header() {
     <Route exact path="/" component={Dashboard}/>
     <Route path="/Dashboard" component={Dashboard}/> 
     <Route path="/devices" component={Devices}/>     
+    <Route path="/users" component={Users}/>  
     </div>     
     </div>
   </HashRouter>  

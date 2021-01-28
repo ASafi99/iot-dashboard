@@ -1,6 +1,6 @@
 import userEvent from '@testing-library/user-event';
 import React, { Component, useState, useEffect} from 'react';
-import fire from './fire';
+import {fire} from './fire';
 import { Button } from 'react-bootstrap';
 import { Modal } from './Modal';
 import { makeStyles } from '@material-ui/core/styles';
@@ -42,14 +42,15 @@ export default function Widget (props) {
         textAlign: "center",
         top: "50%",
         width: "100%",
+        opacity: "50%"
         
     }
 
     const title = {
 
-        right: "500px",
+        right: 400,
         marginTop: "-150px",
-        position: "absolute",
+        position: "fixed",
         textAlign: "center",
         top: "50%",
         width: "100%",

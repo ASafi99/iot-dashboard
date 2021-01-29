@@ -18,12 +18,13 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
        // let temps = []
         let temps1 =[]
         docRef.onSnapshot((doc) => {
+          
 
-          setDevices(Object.keys(doc.data())); 
+          setDevices(Object.keys(doc.data().devices)); 
 
           devices.map(da => {
-            if(Object.keys(doc.data()[da].widgets).length>0){
-            temps1.push(doc.data()[da].widgets)
+            if(Object.keys(doc.data().devices[da].widgets).length>0){
+            temps1.push(doc.data().devices[da].widgets)
             }
             
             })

@@ -57,7 +57,7 @@ function Devices (){
         var elements=[];
          docRef.onSnapshot((doc) => {
         // devices.push(doc.data())
-         setDevices(Object.keys(doc.data())); 
+         setDevices(Object.keys(doc.data().devices)); 
         
     })  
 

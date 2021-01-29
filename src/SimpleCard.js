@@ -59,7 +59,7 @@ export default function SimpleCard(props) {
     
     fire.firestore().collection("users").doc(fire.auth().currentUser.uid).get().then((doc) =>{
 
-     elements1.push(doc.data()[device].deviceInfo.created.toDate().toLocaleDateString('en',options).toString())
+     elements1.push(doc.data().devices[device].deviceInfo.created.toDate().toLocaleDateString('en',options).toString())
 
      setCreated(elements1)
      

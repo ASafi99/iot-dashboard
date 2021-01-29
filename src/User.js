@@ -51,6 +51,17 @@ function User() {
      fire
       .auth()
       .createUserWithEmailAndPassword(email, password)
+      .then(cred => {   
+        
+        
+        fire.firestore().collection('users').doc(cred.user.uid).set({
+          userInfo:{
+            email: email,
+            uid: cred.user.uid,
+            accountType: "IoT Admin"
+          }
+        })     
+      })
       .catch((err) => {
         switch (err.code) {
           case "auth/email-already-in-use":

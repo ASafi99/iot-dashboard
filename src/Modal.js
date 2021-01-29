@@ -135,6 +135,7 @@ export const Modal = (props) => {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [accountType, setAccountType] = useState("");
 
  const { showModal, setShowModal, isWidget,obj, currentDevice, isUser } = props
 
@@ -170,9 +171,31 @@ export const Modal = (props) => {
        .then(cred => {   
         
           fire.firestore().collection('users').doc(cred.user.uid).set({ 
-        email: [email]
+            
+            userInfo:{
+              email: email,
+              uid: cred.user.uid,
+              ref:  fire.firestore().doc('users/' + fire.auth().currentUser.uid),
+              accountType: accountType
+            }
 
           })
+
+          var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+
+          const object = {
+
+            users:{
+
+              [cred.user.uid]:{
+                email: email,
+              
+              }
+            }
+
+          }
+        
+         docRef.set(object, {merge:true})
 
         setShowModal(prev => !prev)
         alert("You have successfully added user: "+ email)
@@ -204,6 +227,8 @@ export const Modal = (props) => {
     var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
 
     const object = {
+      
+      devices:{
       [deviceName] :{
         deviceInfo: {
         deviceName: deviceName,
@@ -214,11 +239,10 @@ export const Modal = (props) => {
 
       }
     }
-
-      
+      }
     }
 
-    docRef.update(object, {merge:true})
+    docRef.set(object, {merge:true})
     setShowModal(prev => !prev)
 
     setDevice("")
@@ -244,6 +268,7 @@ export const Modal = (props) => {
 
     const object = {
       
+      devices:{
         [currentDevice]:{
           widgets:{
           [widgetName]:{
@@ -254,10 +279,10 @@ export const Modal = (props) => {
           maxValue: maxValue,
           type: "Sensor",
           value: rand,
-          deviceName: [currentDevice],
+          deviceName: currentDevice,
         }}}
       }
-    
+    }
 
     docRef.set(object, {merge:true})
     setShowModal(prev => !prev)
@@ -281,6 +306,7 @@ export const Modal = (props) => {
 
     const object = {
       
+      devices:{
         [currentDevice]:{
           widgets:{
           [widgetName]:{
@@ -291,10 +317,10 @@ export const Modal = (props) => {
           onText: onText,
           offText: offText,
           type: "Switch",
-          deviceName: [currentDevice],
+          deviceName: currentDevice,
           
         }}}
-      }
+      }}
       
 
     docRef.set(object, {merge:true})
@@ -368,21 +394,30 @@ const classes = useStyles();
        <animated.div style={animation}>
          <WidgetModalWrapper showModal={showModal}>
            <ModalContent>        
-           <Form  noValidate validated={validated} onSubmit={submit} >
+           <Form  noValidate validated={validated} >
              
            <h2>Add User</h2>
 
            <Form.Group >
-              <Form.Label style={{fontSize:25}}>User Name</Form.Label>
-              <Form.Control style = {{maxWidth:600}} required size ='lg' placeholder="Enter user name" value = {email} onChange={e => setEmail(e.target.value)} />
-              <p style = {{color: "red", position:"absolute", top:150}} >{emailError}</p>
+              <Form.Label style={{fontSize:15}}>User Name</Form.Label>
+              <Form.Control style = {{minWidth:400}} required  placeholder="Enter user name" value = {email} onChange={e => setEmail(e.target.value)} />
+              <p style = {{color: "red", position:"absolute", top:125}} >{emailError}</p>
             </Form.Group>
 
-          <Form.Group style = {{position:"relative",  padding:0, margin: 0, top:40}}>
-            <Form.Label style={{fontSize:25}} >Password</Form.Label>
-            <Form.Control required size ='lg' style = {{maxWidth:600}} placeholder="Enter password" value = {password} onChange={e => setPassword(e.target.value)}/>
-            <p style = {{color: "red", position:"absolute", top:200}}>{passwordError}</p>
+          <Form.Group style = {{position:"relative",  padding:0, margin: 0, top:30 }}>
+            <Form.Label style={{fontSize:15}} >Password</Form.Label>
+            <Form.Control required placeholder="Enter password" value = {password} onChange={e => setPassword(e.target.value)}/>
+            <p style = {{color: "red", position:"absolute", top: 135}}>{passwordError}</p>
           </Form.Group>
+
+          <Form.Group style = {{position:"relative",  padding:0, margin: 0, top: 50 }} >
+              <Form.Label style={{fontSize:15}}>Account type</Form.Label>
+              <Form.Control required  as = "select" defaultValue = "Choose..." onChange={e => setAccountType(e.target.value)}>
+              <option value = "">Choose...</option>
+                <option>IoT User</option>
+                <option>IoT Owner</option>
+                </Form.Control>
+            </Form.Group>
 
           <input style = {{width:200, height:70, position: "absolute", top: 350}} className = "save" type = "submit" value ="Add User" onClick = {signUpWithEmailAndPassword} ></input>
 

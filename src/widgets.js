@@ -91,8 +91,8 @@ export default function Widget (props) {
         const unsubscribe =  docRef.onSnapshot((doc) => {
             
             
-              temps.push(doc.data()[currentDevice].widgets)
-              if(Object.keys(doc.data()[currentDevice].widgets).length>0){
+              temps.push(doc.data().devices[currentDevice].widgets)
+              if(Object.keys(doc.data().devices[currentDevice].widgets).length>0){
 
               setTemp(temps)      
               setData(true)

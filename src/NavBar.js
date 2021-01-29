@@ -5,7 +5,6 @@ import {MdDashboard, MdDevicesOther, MdLocationSearching} from "react-icons/md";
 import {FiUsers} from "react-icons/fi"
 import Dashboard from "./Dashboard";
 import Users from "./Users";
-
 import Devices from "./Devices.js"
 
 

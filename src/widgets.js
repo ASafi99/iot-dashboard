@@ -11,6 +11,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import zIndex from '@material-ui/core/styles/zIndex';
 
 
 const useStyles = makeStyles({
@@ -42,7 +43,8 @@ export default function Widget (props) {
         textAlign: "center",
         top: "50%",
         width: "100%",
-        opacity: "50%"
+        opacity: "50%",
+        zIndex: -1
         
     }
 

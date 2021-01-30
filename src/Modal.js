@@ -189,6 +189,7 @@ export const Modal = (props) => {
 
               [cred.user.uid]:{
                 email: email,
+                accountType: accountType
               
               }
             }

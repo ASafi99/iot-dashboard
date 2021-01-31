@@ -8,44 +8,94 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
     const [isData, setData] = useState(false);
     const [switchData, setSwitchData] = useState([]);
     const [devices, setDevices] = useState([])
+    const [ref, setRef] = useState("")
     
 
     useEffect(() => {   
+      
+      fire.firestore().collection("users").doc(fire.auth().currentUser.uid).get().then(function(doc) {
+        
+            let accountType = doc.data().userInfo.accountType;
+            
 
-        var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+            if(accountType=== "IoT Owner"){
+
+              setRef(doc.data().userInfo.ref)
+  
+            } else{
+  
+              
+            }
+
+           
+           
+      },)
+      
+      
+      
           
         /* Create reference to messages in Firebase Database */
-       // let temps = []
-        let temps1 =[]
-        docRef.onSnapshot((doc) => {
+      
+
+    },[])
+
+     useEffect(() => {
+
+      let docRef
+
+      if(ref) {
+         docRef = fire.firestore().collection("users").doc(ref)
+      }else{
+         docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+      }
+    
+      docRef.onSnapshot((doc) => {
           
-
-          setDevices(Object.keys(doc.data().devices)); 
-
-          devices.map(da => {
-            if(Object.keys(doc.data().devices[da].widgets).length>0){
-            temps1.push(doc.data().devices[da].widgets)
-            }
-            
-            })
-
-            if(temps1.length>0){
-
-              setSwitchData(temps1)
-              setData(true)
         
-              }else{
-        
-              setData(false)
-        
+        setDevices(Object.keys(doc.data().devices)); 
+       
+      })
+
+     
+    },[ref])
+
+    useEffect(() => {
+
+      let docRef
+      console.log(ref)
+
+      if(ref.length > 1) {
+         docRef = fire.firestore().collection("users").doc(ref)
+      }else{
+         docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+      }
+    
+      console.log(docRef)
+      docRef.onSnapshot((doc) => {
+
+        let temps1 =[]
+
+        devices.map(da => {
+
+              if(Object.keys(doc.data().devices[da].widgets).length>0){
+              temps1.push(doc.data().devices[da].widgets)
               }
-        })
-
-
-   
-
-    }, [devices])
+              
+              })
   
+              if(temps1.length>0){
+  
+                setSwitchData(temps1)
+                setData(true)
+          
+                }else{
+          
+                setData(false)
+          
+                }
+
+          })
+        },[ref, devices])
 
         const h1 = {
             left: "0",

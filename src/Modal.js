@@ -175,7 +175,7 @@ export const Modal = (props) => {
             userInfo:{
               email: email,
               uid: cred.user.uid,
-              ref:  fire.firestore().doc('users/' + fire.auth().currentUser.uid),
+              ref:  fire.firestore().doc(fire.auth().currentUser.uid),
               accountType: accountType
             }
 
@@ -217,37 +217,50 @@ export const Modal = (props) => {
          
         });
     };
-    
        
 
-  const handleDeviceSave= () => {
+  function handleDeviceSave() {
 
-  if(!deviceName){
+    if (!deviceName) {
+    } else {
 
-  }else{
-    var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+      let docRef;
 
-    const object = {
-      
-      devices:{
-      [deviceName] :{
-        deviceInfo: {
-        deviceName: deviceName,
-        created: new Date(),
-        
-      },
-      widgets:{
+      fire.firestore().collection("users").doc(fire.auth().currentUser.uid).get().then(function (doc) {
 
-      }
+        let accountType = doc.data().userInfo.accountType;
+
+        setAccountType(accountType);
+        if (accountType === "IoT Owner") {
+
+          let ref = doc.data().userInfo.ref;
+          docRef = fire.firestore().collection("users").doc(ref);
+
+        } else {
+          docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid);
+
+        }
+
+
+        const object = {
+          devices: {
+            [deviceName]: {
+              deviceInfo: {
+                deviceName: deviceName,
+                created: new Date(),
+              },
+              widgets: {}
+            }
+          }
+        };
+
+        docRef.set(object, { merge: true });
+      });
+      setShowModal(prev => !prev);
+
+      setDevice("");
     }
-      }
-    }
-
-    docRef.set(object, {merge:true})
-    setShowModal(prev => !prev)
-
-    setDevice("")
-  }}
+  }
 
   const submit = (event) => {
 
@@ -264,8 +277,24 @@ export const Modal = (props) => {
 
     }else{
 
-    var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
-    var rand = Math.floor(Math.random() * 101);  
+      let docRef
+
+      fire.firestore().collection("users").doc(fire.auth().currentUser.uid).get().then(function(doc) {
+          
+        let accountType = doc.data().userInfo.accountType;
+      
+        setAccountType(accountType)
+        if(accountType=== "IoT Owner"){
+  
+          let ref = doc.data().userInfo.ref;
+           docRef = fire.firestore().collection("users").doc(ref)
+           
+        } else{
+          docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+  
+        }
+
+       var rand = Math.floor(Math.random() * 101);  
 
     const object = {
       
@@ -286,6 +315,7 @@ export const Modal = (props) => {
     }
 
     docRef.set(object, {merge:true})
+      })
     setShowModal(prev => !prev)
 
     setWidget("")
@@ -304,6 +334,23 @@ export const Modal = (props) => {
     if(!widgetName || !datasource || !locationName || !onText || !offText || !value ){
 
     }else{
+
+      let docRef
+
+      fire.firestore().collection("users").doc(fire.auth().currentUser.uid).get().then(function(doc) {
+          
+        let accountType = doc.data().userInfo.accountType;
+      
+        setAccountType(accountType)
+        if(accountType=== "IoT Owner"){
+  
+          let ref = doc.data().userInfo.ref;
+           docRef = fire.firestore().collection("users").doc(ref)
+           
+        } else{
+          docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+  
+        }
 
     const object = {
       
@@ -325,6 +372,7 @@ export const Modal = (props) => {
       
 
     docRef.set(object, {merge:true})
+  })
     setShowModal(prev => !prev)
 
     setWidget("")

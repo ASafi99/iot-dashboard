@@ -55,10 +55,16 @@ function User() {
         
         
         fire.firestore().collection('users').doc(cred.user.uid).set({
+
+          
           userInfo:{
             email: email,
             uid: cred.user.uid,
             accountType: "IoT Admin"
+          },
+
+          devices:{
+
           }
         })     
       })

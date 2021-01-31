@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal } from './Modal';
 import {fire} from './fire';
@@ -36,6 +36,8 @@ function Devices (){
     const [element, setElement] = useState([])
     const [showPage, setPage] = useState (true)
     const [currentDevice, setCurrentDevice] = useState("")
+    const [accountType, setAccountType] = useState ("")
+
     //const [created, setCreated] = useState([])
    
     const page = (childData) => {
@@ -52,33 +54,71 @@ function Devices (){
 
     useEffect(() => {   
 
-        var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+        fire.firestore().collection("users").doc(fire.auth().currentUser.uid).get().then(function(doc) {
+        
+            let accountType = doc.data().userInfo.accountType;
+            let docRef
+
+            setAccountType(accountType)
+            if(accountType=== "IoT Owner"){
+
+              let ref = doc.data().userInfo.ref;
+               docRef = fire.firestore().collection("users").doc(ref)
+               
+            } else{
+              docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+
+            }
+        
      /* Create reference to messages in Firebase Database */
-        var elements=[];
+        
          docRef.onSnapshot((doc) => {
         // devices.push(doc.data())
          setDevices(Object.keys(doc.data().devices)); 
-        
+         
     })  
 
+
+    //   for(var i=0;i<showDevices.length;i++){    
+
+    //          elements.push(<Grid item xs= {3}>
+    //              <Card key = {i} device = {showDevices[i]} showPage = {page} currentDevice = {device}  />
+    //           </Grid>)
+              
+    //      }
+    //      setElement(elements)
+
+        })
     
-      for(var i=0;i<showDevices.length;i++){    
+        
+    },[currentDevice])
+
+
+    useEffect(() => {
+
+        var elements=[];
+
+     for(var i=0;i<showDevices.length;i++){    
 
              elements.push(<Grid item xs= {3}>
                  <Card key = {i} device = {showDevices[i]} showPage = {page} currentDevice = {device}  />
               </Grid>)
               
          }
+         console.log("3rd")
          setElement(elements)
-    
 
-    },[showDevices,currentDevice])
+        
+
+    }, [showDevices])
+
 
     const openModal = () => {
       setShowModal(prev => !prev);
 
     }
 
+    
 
        return(
         <>
@@ -86,7 +126,18 @@ function Devices (){
              <>           
             <h2 style = {title} >Devices </h2>
 
+            {accountType === "IoT Owner" ? (
+           <OverlayTrigger placement="bottom" overlay={<Tooltip id="tooltip-disabled">Only IoT Admin are able to add devices!</Tooltip>}>
+           <span className="d-inline-block" style = {{position: "absolute", right: "100px",
+    marginTop: "140px"}}>
+           <Button disabled variant="primary" style = {{pointerEvents: 'none'}}>
+               Add device
+             </Button>
+           </span>
+         </OverlayTrigger>
+            ) :(
             <Button onClick={openModal} variant="primary" style = {pos}>Add device</Button>
+            )}
             <Modal showModal={showModal} setShowModal={setShowModal} isWidget ={true} currentDevice = {currentDevice} /> 
     <Grid container>
       {element}

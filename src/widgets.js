@@ -85,28 +85,45 @@ export default function Widget (props) {
     
     useEffect(() => {   
 
-        var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+        fire.firestore().collection("users").doc(fire.auth().currentUser.uid).get().then(function(doc) {
+        
+          let accountType = doc.data().userInfo.accountType;
+          let docRef
+
+          if(accountType=== "IoT Owner"){
+
+            let ref = doc.data().userInfo.ref;
+             docRef = fire.firestore().collection("users").doc(ref)
+          } else{
+            docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+
+          }
+
+          console.log("1st")
           
         /* Create reference to messages in Firebase Database */
 
-        let temps = []
-        const unsubscribe =  docRef.onSnapshot((doc) => {
-            
-            
-              temps.push(doc.data().devices[currentDevice].widgets)
-              if(Object.keys(doc.data().devices[currentDevice].widgets).length>0){
+       
+          docRef.onSnapshot((doc) => {
 
-              setTemp(temps)      
+              if(Object.keys(doc.data().devices[currentDevice].widgets).length>0){
+              
+              setTemp([doc.data().devices[currentDevice].widgets]) 
+              
               setData(true)
 
                }else{
                setData(false)
               }
+
+              console.log("2nd")
     })
+  
+   
+  })
+  
     
-    return () => unsubscribe()
-    
-    }, [currentDevice,tempa])
+    },[])
 
     const removeField = (widgetName) => {
 
@@ -134,7 +151,8 @@ export default function Widget (props) {
     return(
         <div>
     <h5 style = {title}>
-   Device : <p style = {{display: "inline", backgroundColor:"blue", color:"white", borderRadius: "6px"}}>{currentDevice}</p>
+   Device :  <p style = {{display: "inline", backgroundColor:"blue", color:"white", borderRadius: "6px"}}>{currentDevice}</p>
+
    
    
    </h5>

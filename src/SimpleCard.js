@@ -56,14 +56,29 @@ export default function SimpleCard(props) {
       minute: "numeric",
       second: "numeric"
   };
+
+  fire.firestore().collection("users").doc(fire.auth().currentUser.uid).get().then(function(doc) {
+        
+    let accountType = doc.data().userInfo.accountType;
+    let docRef
+
+    if(accountType=== "IoT Owner"){
+
+      let ref = doc.data().userInfo.ref;
+       docRef = fire.firestore().collection("users").doc(ref)
+    } else{
+      docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+
+    }
     
-    fire.firestore().collection("users").doc(fire.auth().currentUser.uid).get().then((doc) =>{
+    docRef.get().then((doc) =>{
 
      elements1.push(doc.data().devices[device].deviceInfo.created.toDate().toLocaleDateString('en',options).toString())
 
      setCreated(elements1)
      
     })
+  })
 
 },[device])
 

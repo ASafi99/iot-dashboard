@@ -59,13 +59,13 @@ export default function Users () {
         /* Create reference to messages in Firebase Database */
 
         let temps = []
-        const unsubscribe =  docRef.onSnapshot((doc) => {
+         docRef.onSnapshot((doc) => {
             
             
               temps.push(doc.data().users)
               if(Object.keys(doc.data().users).length>0){
 
-              setTemp(temps)      
+              setTemp([doc.data().users])      
               setData(true)
 
                }else{
@@ -73,9 +73,9 @@ export default function Users () {
               }
     })
     
-    return () => unsubscribe()
+   
     
-    }, [tempa])
+    }, [])
   
 
     const tablePos = {

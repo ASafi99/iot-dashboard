@@ -60,7 +60,7 @@ function Devices (){
             let docRef
 
             setAccountType(accountType)
-            if(accountType=== "IoT Owner"){
+            if(accountType=== "IoT Owner" || accountType === "IoT User"){
 
               let ref = doc.data().userInfo.ref;
                docRef = fire.firestore().collection("users").doc(ref)
@@ -105,7 +105,7 @@ function Devices (){
               </Grid>)
               
          }
-         console.log("3rd")
+        
          setElement(elements)
 
         
@@ -126,7 +126,7 @@ function Devices (){
              <>           
             <h2 style = {title} >Devices </h2>
 
-            {accountType === "IoT Owner" ? (
+            {accountType === "IoT Owner" || accountType === "IoT User" ? (
            <OverlayTrigger placement="bottom" overlay={<Tooltip id="tooltip-disabled">Only IoT Admin are able to add devices!</Tooltip>}>
            <span className="d-inline-block" style = {{position: "absolute", right: "100px",
     marginTop: "140px"}}>

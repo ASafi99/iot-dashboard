@@ -175,8 +175,8 @@ export const Modal = (props) => {
             userInfo:{
               email: email,
               uid: cred.user.uid,
-              ref:  fire.firestore().doc(fire.auth().currentUser.uid),
-              accountType: accountType
+              ref: fire.auth().currentUser.uid,
+              accountType: accountType,
             }
 
           })
@@ -240,8 +240,6 @@ export const Modal = (props) => {
           docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid);
 
         }
-
-
         const object = {
           devices: {
             [deviceName]: {
@@ -329,7 +327,7 @@ export const Modal = (props) => {
 
   const handleSwitchWidgetSave = () => {
 
-    var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+
 
     if(!widgetName || !datasource || !locationName || !onText || !offText || !value ){
 
@@ -443,7 +441,7 @@ const classes = useStyles();
        <animated.div style={animation}>
          <WidgetModalWrapper showModal={showModal}>
            <ModalContent>        
-           <Form  noValidate validated={validated} >
+           <Form >
              
            <h2>Add User</h2>
 
@@ -468,7 +466,7 @@ const classes = useStyles();
                 </Form.Control>
             </Form.Group>
 
-          <input style = {{width:200, height:70, position: "absolute", top: 350}} className = "save" type = "submit" value ="Add User" onClick = {signUpWithEmailAndPassword} ></input>
+          <input style = {{width:200, height:70, position: "absolute", top: 350}} className = "save" type = "button" value ="Add User" onClick = {signUpWithEmailAndPassword} ></input>
 
            </Form>           
 

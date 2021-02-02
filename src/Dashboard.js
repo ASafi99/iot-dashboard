@@ -18,7 +18,7 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
             let accountType = doc.data().userInfo.accountType;
             
 
-            if(accountType=== "IoT Owner"){
+            if(accountType=== "IoT Owner" || accountType === "IoT User"){
 
               setRef(doc.data().userInfo.ref)
   

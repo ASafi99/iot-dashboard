@@ -62,7 +62,7 @@ export default function SimpleCard(props) {
     let accountType = doc.data().userInfo.accountType;
     let docRef
 
-    if(accountType=== "IoT Owner"){
+    if(accountType=== "IoT Owner" || accountType === "IoT User" ){
 
       let ref = doc.data().userInfo.ref;
        docRef = fire.firestore().collection("users").doc(ref)

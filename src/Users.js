@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect} from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal } from './Modal';
 import { makeStyles } from '@material-ui/core/styles';
@@ -44,6 +44,7 @@ export default function Users () {
     const [showModal, setShowModal] = useState(false);
     const [isData, setData] = useState(false);
     const [tempa, setTemp] = useState([]);
+    const [accountType, setAccountType] = useState ("")
 
 
     const openModal = () => {
@@ -54,26 +55,36 @@ export default function Users () {
         
     useEffect(() => {   
 
-        var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+      fire.firestore().collection("users").doc(fire.auth().currentUser.uid).get().then(function(doc) {
+        
+        let accountType = doc.data().userInfo.accountType;
+        
+        setAccountType(accountType)
+        if(accountType=== "IoT Owner" || accountType === "IoT User"){
+     
+       } else{
+
+        let docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+        let temps = []
+        docRef.onSnapshot((doc) => {
+           
+           
+             temps.push(doc.data().users)
+             if(Object.keys(doc.data().users).length>0){
+
+             setTemp([doc.data().users])      
+             setData(true)
+
+              }else{
+              setData(false)
+             }
+   })
+
+       }
+      })
           
         /* Create reference to messages in Firebase Database */
 
-        let temps = []
-         docRef.onSnapshot((doc) => {
-            
-            
-              temps.push(doc.data().users)
-              if(Object.keys(doc.data().users).length>0){
-
-              setTemp([doc.data().users])      
-              setData(true)
-
-               }else{
-               setData(false)
-              }
-    })
-    
-   
     
     }, [])
   
@@ -104,7 +115,18 @@ export default function Users () {
         <>
         <h2 style = {title} >Users </h2>
 
+        {accountType === "IoT User" || accountType === "IoT Owner" ? (
+           <OverlayTrigger placement="bottom" overlay={<Tooltip id="tooltip-disabled">Only IoT Admins are able to add users!</Tooltip>}>
+           <span className="d-inline-block" style = {{position: "absolute", right: "100px",
+    marginTop: "140px"}}>
+           <Button disabled variant="primary" style = {{pointerEvents: 'none'}}>
+               Add users
+             </Button>
+           </span>
+         </OverlayTrigger>
+            ) :(
         <Button onClick={openModal} variant="primary" style = {pos}>Add users</Button>
+            )}
         <Modal showModal={showModal} setShowModal={setShowModal} isUser= {true} /> 
 
    {!isData ? (

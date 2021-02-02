@@ -1,11 +1,12 @@
 import { AppBar, Toolbar, makeStyles, Button } from "@material-ui/core";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link,  BrowserRouter, Route, Switch, HashRouter, NavLink } from "react-router-dom";
 import {MdDashboard, MdDevicesOther, MdLocationSearching} from "react-icons/md";
 import {FiUsers} from "react-icons/fi"
 import Dashboard from "./Dashboard";
 import Users from "./Users";
 import Devices from "./Devices.js"
+import {fire} from './fire';
 
 
 
@@ -107,6 +108,15 @@ export default function Header() {
         
       }
 
+      const [accountType, setAccountType] = useState ("")
+      useEffect(() => {   
+        
+        fire.firestore().collection("users").doc(fire.auth().currentUser.uid).get().then(function(doc) {
+
+          setAccountType(doc.data().userInfo.accountType)
+      
+      })
+    })
 
       
   return (
@@ -118,8 +128,9 @@ export default function Header() {
           <Toolbar className={toolbar}>
                 
                 <div>{headerButtons()}</div>
+                <p style={{ position: "absolute", right:100, fontWeight: 700, bottom:5}}>Logged in as: {accountType}</p>
+            </Toolbar> 
                             
-            </Toolbar>                 
         </AppBar> 
 
     <div className = {content}>

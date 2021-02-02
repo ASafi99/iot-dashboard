@@ -1,7 +1,7 @@
 import userEvent from '@testing-library/user-event';
 import React, { Component, useState, useEffect} from 'react';
 import {fire} from './fire';
-import { Button } from 'react-bootstrap';
+import { Button, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import { Modal } from './Modal';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -70,6 +70,8 @@ export default function Widget (props) {
          
     }
 
+    const [accountType, setAccountType] = useState ("")
+
     // const getData = () => {
 
     //     var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
@@ -90,7 +92,9 @@ export default function Widget (props) {
           let accountType = doc.data().userInfo.accountType;
           let docRef
 
-          if(accountType=== "IoT Owner"){
+          setAccountType(accountType)
+
+          if(accountType=== "IoT Owner" || accountType === "IoT User"){
 
             let ref = doc.data().userInfo.ref;
              docRef = fire.firestore().collection("users").doc(ref)
@@ -99,7 +103,7 @@ export default function Widget (props) {
 
           }
 
-          console.log("1st")
+         
           
         /* Create reference to messages in Firebase Database */
 
@@ -116,7 +120,7 @@ export default function Widget (props) {
                setData(false)
               }
 
-              console.log("2nd")
+             
     })
   
    
@@ -195,8 +199,18 @@ export default function Widget (props) {
       </div>
    
    )}
-
+     {accountType === "IoT User" ? (
+           <OverlayTrigger placement="bottom" overlay={<Tooltip id="tooltip-disabled">Only IoT Admin and IoT Owner are able to add widgets!</Tooltip>}>
+           <span className="d-inline-block" style = {{position: "absolute", right: "100px",
+    marginTop: "140px"}}>
+           <Button disabled variant="primary" style = {{pointerEvents: 'none'}}>
+               Add widget
+             </Button>
+           </span>
+         </OverlayTrigger>
+            ) :(
    <Button onClick={openModal} variant="primary" style = {buttonPos}>Add widget</Button>
+            )}
    <Modal showModal={showModal} setShowModal={setShowModal} isWidget = {false} currentDevice = {currentDevice} />
     </div>
 

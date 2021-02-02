@@ -256,6 +256,7 @@ export const Modal = (props) => {
       });
       setShowModal(prev => !prev);
 
+      alert("You have successfully added device: "+ deviceName)
       setDevice("");
     }
   }
@@ -315,7 +316,7 @@ export const Modal = (props) => {
     docRef.set(object, {merge:true})
       })
     setShowModal(prev => !prev)
-
+    alert("You have successfully added sensor widget: "+ widgetName)
     setWidget("")
     setDatasource("")
     setLocation("")
@@ -372,6 +373,7 @@ export const Modal = (props) => {
     docRef.set(object, {merge:true})
   })
     setShowModal(prev => !prev)
+    alert("You have successfully added switch widget: "+ widgetName)
 
     setWidget("")
     setDatasource("")

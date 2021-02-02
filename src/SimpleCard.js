@@ -84,7 +84,7 @@ export default function SimpleCard(props) {
 
   
   return (
-    <Card className={classes.root}>
+    <Card >
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>  
         </Typography>

@@ -6,6 +6,7 @@ import {fire} from './fire';
 import Card from './SimpleCard'
 import {Grid} from "@material-ui/core";
 import Widget from './widgets.js'
+import { makeStyles } from "@material-ui/core/styles";
 
 const title = {
 
@@ -94,31 +95,49 @@ function Devices (){
     },[currentDevice])
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        var elements=[];
+    //     var elements=[];
 
-     for(var i=0;i<showDevices.length;i++){    
+    //  for(var i=0;i<showDevices.length;i++){    
 
-             elements.push(<Grid item xs= {3}>
-                 <Card key = {i} device = {showDevices[i]} showPage = {page} currentDevice = {device}  />
-              </Grid>)
+    //          elements.push(<Grid item xs= {3}>
+    //              <Card key = {i} device = {showDevices[i]} showPage = {page} currentDevice = {device}  />
+    //           </Grid>)
               
-         }
+    //      }
         
-         setElement(elements)
+    //      setElement(elements)
 
         
 
-    }, [showDevices])
+    // }, [showDevices])
 
+        let deviceCards = showDevices.map((d, i) =>
+    
+    <Grid item xs={3} >
+      <Card key = {i} device = {showDevices[i]} showPage = {page} currentDevice = {device} /> 
+    </Grid>
+    )
+          
+
+    const useStyles = makeStyles({
+      gridContainer: {
+        
+        margin:0,
+       marginTop: 150 ,
+       position: "absolute",
+       width:"inherit",
+       
+      }
+    });
 
     const openModal = () => {
       setShowModal(prev => !prev);
 
     }
 
-    
+    const classes = useStyles();
 
        return(
         <>
@@ -139,8 +158,17 @@ function Devices (){
             <Button onClick={openModal} variant="primary" style = {pos}>Add device</Button>
             )}
             <Modal showModal={showModal} setShowModal={setShowModal} isWidget ={true} currentDevice = {currentDevice} /> 
-    <Grid container>
-      {element}
+    <Grid  
+          fluid
+          container
+          className={classes.gridContainer}
+          spacing= "5"
+          direction="row"
+          alignContent="center"
+          alignItems="center"
+          wrap="wrap"
+         >
+      {deviceCards}
     </Grid> 
             </>
         ) : (

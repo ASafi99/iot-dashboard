@@ -128,6 +128,8 @@ function Devices (){
        marginTop: 150 ,
        position: "absolute",
        width:"inherit",
+       zIndex:-10,
+       minWidth:1200
        
       }
     });
@@ -162,7 +164,7 @@ function Devices (){
           fluid
           container
           className={classes.gridContainer}
-          spacing= "5"
+          spacing= {8}
           direction="row"
           alignContent="center"
           alignItems="center"

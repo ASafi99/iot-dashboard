@@ -1,6 +1,6 @@
 import userEvent from '@testing-library/user-event';
 import React, { Component, useState, useEffect} from 'react';
-import {fire} from './fire';
+import {fire, otherApp} from './fire';
 import { Button, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import { Modal } from './Modal';
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,7 +11,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import zIndex from '@material-ui/core/styles/zIndex';
+import firebase from 'firebase/app'
 
 
 const useStyles = makeStyles({
@@ -131,13 +131,16 @@ export default function Widget (props) {
 
     const removeField = (widgetName) => {
 
-    
-
-      var docRef = fire.firestore().collection('users').doc(fire.auth().currentUser.uid);
-      
      
 
-    }
+      var docRef = fire.firestore().collection('users').doc(fire.auth().currentUser.uid);
+
+      docRef.update({
+
+        [`devices.${currentDevice}.widgets.${widgetName}`]: firebase.firestore.FieldValue.delete()
+    });
+
+  }
     
     const openModal = () => {
         setShowModal(prev => !prev);
@@ -189,7 +192,7 @@ export default function Widget (props) {
               <TableCell align="right">{obj.value}</TableCell>
               <TableCell align="right">{obj.location}</TableCell>
               <TableCell align="right">
-                <button style = {{backgroundColor: "red", color: "white" , borderRadius: "10px", width: 80}} onClick = {() => removeField(obj.widgetName)}>Delete</button>
+                <button style = {{backgroundColor: "red", color: "white" , borderRadius: "10px", width: 80}} onClick = {() => {if(window.confirm('Are you sure you want to Delete this widget?'))removeField(obj.widgetName)}}>Delete</button>
                 </TableCell>
             </TableRow>
           )))}

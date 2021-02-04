@@ -6,7 +6,9 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import zIndex from '@material-ui/core/styles/zIndex';
-import {fire}from './fire';
+import {fire} from './fire';
+import { FaEye, FaTrashAlt} from 'react-icons/fa';
+import firebase from 'firebase/app'
 
 
 const useStyles = makeStyles({
@@ -82,6 +84,17 @@ export default function SimpleCard(props) {
 
 },[device])
 
+  const removeField = (device) => {
+
+  var docRef = fire.firestore().collection('users').doc(fire.auth().currentUser.uid);
+
+  docRef.update({
+
+    [`devices.${device}`]: firebase.firestore.FieldValue.delete()
+});
+
+}
+
   
   return (
     <Card >
@@ -96,11 +109,10 @@ export default function SimpleCard(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button onClick = {()=>{
-          
-         console.log(device)
+        <Button  onClick = {()=>{
          sendData(device)
-           }}>VIEW</Button>
+           }}> {<FaEye/>}</Button>
+           <Button onClick = {() => {if(window.confirm('Are you sure you want to delete this device?'))removeField(device)}}>{<FaTrashAlt/>}</Button>
 
       </CardActions>
     </Card>

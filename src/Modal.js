@@ -137,7 +137,7 @@ export const Modal = (props) => {
   const [passwordError, setPasswordError] = useState("");
   const [accountType, setAccountType] = useState("");
 
- const { showModal, setShowModal, isWidget,obj, currentDevice, isUser } = props
+ const { showModal, setShowModal, isWidget,obj, currentDevice, isUser, isManageUser } = props
 
  const [switchForm, setForm] = useState(false);
  const [validated, setValidated] = useState(false);
@@ -152,6 +152,23 @@ export const Modal = (props) => {
   const [onText, setONText] = useState("");
   const [offText, setOFFText] = useState("");
   const [value, setValue] = useState("");
+
+  const [users, setUsers] = useState([])
+
+  useEffect(() => { 
+
+    let docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+   
+    docRef.onSnapshot((doc) => {
+       
+         
+         if(Object.keys(doc.data().users).length>0){
+
+         setUsers([doc.data().users])      
+
+         }
+        })
+  },[])
 
   const clearErrors = () => {
     setEmailError("");
@@ -437,7 +454,50 @@ const classes = useStyles();
   
   return (
     <>
-    {isUser ? (
+    {
+    
+    isManageUser ? (
+
+      showModal ? (
+        <Background onClick={closeModal} ref={modalRef}>
+        <animated.div style={animation}>
+          <WidgetModalWrapper showModal={showModal}>
+            <ModalContent>        
+            <Form >
+              
+            <h2>Users</h2>
+ 
+            <Form.Group style = {{position:"relative",  padding:0, margin: 0, top: 50 }} >
+              <Form.Label style={{fontSize:15}}>Account type</Form.Label>
+              <Form.Control required  as = "select" defaultValue = "Choose..." onChange={e => setAccountType(e.target.value)}>
+              <option value = "">Choose...</option>
+              {users && users.map(users =>
+
+      Object.values(users).map((obj,i) =>(
+                <option>{obj.email}</option>
+                
+
+      )))}
+                </Form.Control>
+            </Form.Group>
+
+          <input style = {{width:200, height:70, position: "absolute", top: 350}} className = "save" type = "button" value ="Add User" onClick = {signUpWithEmailAndPassword} ></input>
+
+           </Form>           
+
+</ModalContent>
+<CloseModalButton
+          aria-label='Close modal'
+          onClick={() => setShowModal(prev => !prev)}
+        />
+      </WidgetModalWrapper>
+    </animated.div>
+  </Background>
+      ):null
+
+    ):(
+    
+    isUser ? (
       showModal ? (
        <Background onClick={closeModal} ref={modalRef}>
        <animated.div style={animation}>
@@ -481,7 +541,7 @@ const classes = useStyles();
     </animated.div>
   </Background>
       ):null
-    ):(
+    ):( 
     isWidget ? (
     
       showModal ? (
@@ -653,7 +713,7 @@ const classes = useStyles();
         </Background>
       ) : null
     
-    ))})
+    )))})
     </>
   );
   }

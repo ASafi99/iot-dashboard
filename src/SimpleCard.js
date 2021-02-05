@@ -9,6 +9,7 @@ import zIndex from '@material-ui/core/styles/zIndex';
 import {fire} from './fire';
 import { FaEye, FaTrashAlt} from 'react-icons/fa';
 import firebase from 'firebase/app'
+import {FiUsers} from "react-icons/fi"
 
 
 const useStyles = makeStyles({
@@ -42,6 +43,14 @@ export default function SimpleCard(props) {
 
     props.currentDevice(device)
       
+}
+
+const sendData1 = (device) => {
+  props.showPage(false)
+  props.showUserPage(true)
+
+  props.currentDevice(device)
+    
 }
 
 
@@ -112,7 +121,11 @@ export default function SimpleCard(props) {
         <Button  onClick = {()=>{
          sendData(device)
            }}> {<FaEye/>}</Button>
+           <Button onClick = {()=>{
+         sendData1(device)
+           }}>{<FiUsers/>}</Button>
            <Button onClick = {() => {if(window.confirm('Are you sure you want to delete this device?'))removeField(device)}}>{<FaTrashAlt/>}</Button>
+           
 
       </CardActions>
     </Card>

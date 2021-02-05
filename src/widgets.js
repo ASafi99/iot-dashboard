@@ -156,12 +156,9 @@ export default function Widget (props) {
       const classes = useStyles();
      
     return(
-        <div>
+        <>
     <h5 style = {title}>
    Device :  <p style = {{display: "inline", backgroundColor:"blue", color:"white", borderRadius: "6px"}}>{currentDevice}</p>
-
-   
-   
    </h5>
    {!isData ? (
    <h1 style = {h1}>
@@ -215,7 +212,7 @@ export default function Widget (props) {
    <Button onClick={openModal} variant="primary" style = {buttonPos}>Add widget</Button>
             )}
    <Modal showModal={showModal} setShowModal={setShowModal} isWidget = {false} currentDevice = {currentDevice} />
-    </div>
+    </>
 
     )
 }

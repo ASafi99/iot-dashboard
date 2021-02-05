@@ -7,6 +7,7 @@ import Card from './SimpleCard'
 import {Grid} from "@material-ui/core";
 import Widget from './widgets.js'
 import { makeStyles } from "@material-ui/core/styles";
+import DeviceUsers from './DeviceUsers'
 
 const title = {
 
@@ -34,8 +35,8 @@ function Devices (){
         
     const [showModal, setShowModal] = useState(false);
     const [showDevices, setDevices] = useState([])
-    const [element, setElement] = useState([])
     const [showPage, setPage] = useState (true)
+    const [showUserPage, setUserPage] = useState (false)
     const [currentDevice, setCurrentDevice] = useState("")
     const [accountType, setAccountType] = useState ("")
 
@@ -43,7 +44,16 @@ function Devices (){
    
     const page = (childData) => {
         setPage(childData)
+        setUserPage(childData)
   }
+
+  const page1 = (childData) => {
+    
+    setUserPage(childData)
+}
+
+
+
 
   const device = (childData) => {
     setCurrentDevice(childData)
@@ -79,44 +89,16 @@ function Devices (){
          
     })  
 
-
-    //   for(var i=0;i<showDevices.length;i++){    
-
-    //          elements.push(<Grid item xs= {3}>
-    //              <Card key = {i} device = {showDevices[i]} showPage = {page} currentDevice = {device}  />
-    //           </Grid>)
-              
-    //      }
-    //      setElement(elements)
-
         })
     
         
     },[currentDevice])
 
 
-    // useEffect(() => {
-
-    //     var elements=[];
-
-    //  for(var i=0;i<showDevices.length;i++){    
-
-    //          elements.push(<Grid item xs= {3}>
-    //              <Card key = {i} device = {showDevices[i]} showPage = {page} currentDevice = {device}  />
-    //           </Grid>)
-              
-    //      }
-        
-    //      setElement(elements)
-
-        
-
-    // }, [showDevices])
-
         let deviceCards = showDevices.map((d, i) =>
     
     <Grid item xs={3} >
-      <Card key = {i} device = {showDevices[i]} showPage = {page} currentDevice = {device} /> 
+      <Card key = {i} device = {showDevices[i]} showPage = {page} showUserPage= {page1} currentDevice = {device} /> 
     </Grid>
     )
           
@@ -159,7 +141,7 @@ function Devices (){
             ) :(
             <Button onClick={openModal} variant="primary" style = {pos}>Add device</Button>
             )}
-            <Modal showModal={showModal} setShowModal={setShowModal} isWidget ={true} currentDevice = {currentDevice} /> 
+           
     <Grid  
           fluid
           container
@@ -174,13 +156,19 @@ function Devices (){
     </Grid> 
             </>
         ) : (
+          showUserPage ? ( 
+            <>   
+           <DeviceUsers currentDevice = {currentDevice}/>
+           </>
+          ):(
             <>
             <Widget currentDevice = {currentDevice} />
+            
             </>
-        )}
-
+        
+        ))}
         </>
-        )
+       )  
     }   
 
 export default Devices

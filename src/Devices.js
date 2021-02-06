@@ -39,6 +39,7 @@ function Devices (){
     const [showUserPage, setUserPage] = useState (false)
     const [currentDevice, setCurrentDevice] = useState("")
     const [accountType, setAccountType] = useState ("")
+    const [test, setTest] = useState([])
 
     //const [created, setCreated] = useState([])
    
@@ -85,7 +86,9 @@ function Devices (){
         
          docRef.onSnapshot((doc) => {
         // devices.push(doc.data())
-         setDevices(Object.keys(doc.data().devices)); 
+         setDevices([doc.data().devices]); 
+
+         //setTest([doc.data().devices])
          
     })  
 
@@ -95,12 +98,22 @@ function Devices (){
     },[currentDevice])
 
 
-        let deviceCards = showDevices.map((d, i) =>
-    
+        let deviceCards = showDevices.map((data, i) =>
+         
+            Object.values(data).map((d) =>{
+
+              //console.log(d.users.includes(fire.auth().currentUser.email))
+              
+              if(d.users.includes(fire.auth().currentUser.email)){
+              
+              return(
+              
     <Grid item xs={3} >
-      <Card key = {i} device = {showDevices[i]} showPage = {page} showUserPage= {page1} currentDevice = {device} /> 
+      <Card key = {i} device = {d.deviceInfo.deviceName} showPage = {page} showUserPage= {page1} currentDevice = {device} /> 
     </Grid>
-    )
+            
+            )}}))
+            
           
 
     const useStyles = makeStyles({
@@ -141,6 +154,7 @@ function Devices (){
             ) :(
             <Button onClick={openModal} variant="primary" style = {pos}>Add device</Button>
             )}
+             <Modal showModal={showModal} setShowModal={setShowModal} isWidget ={true} currentDevice = {currentDevice} /> 
            
     <Grid  
           fluid

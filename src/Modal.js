@@ -9,6 +9,7 @@ import { Button } from '@material-ui/core/';
 import {IoIosSwitch} from "react-icons/io";
 import { makeStyles } from '@material-ui/core/styles';
 import "./User.css";
+import firebase from 'firebase/app'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -155,19 +156,33 @@ export const Modal = (props) => {
 
   const [users, setUsers] = useState([])
 
+  const [userToBeAdded, setUserToBeAdded] = useState("")
+  const [userError, setUserError] = useState("")
+
+
+  
+
   useEffect(() => { 
+
+    fire.firestore().collection("users").doc(fire.auth().currentUser.uid).get().then(function (doc) {
+
+      let accountType = doc.data().userInfo.accountType;
+
+      setAccountType(accountType);
+      if (accountType === "IoT Owner" || accountType === "IoT User") {
+      }else{
 
     let docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
    
     docRef.onSnapshot((doc) => {
-       
-         
+                
          if(Object.keys(doc.data().users).length>0){
 
          setUsers([doc.data().users])      
 
          }
-        })
+      })}
+    })
   },[])
 
   const clearErrors = () => {
@@ -179,6 +194,56 @@ export const Modal = (props) => {
     setEmail("");
     setPassword("");
   };
+
+  function handleUserAdd() {
+
+    let temps = []
+    users && users.map(users =>
+
+      Object.values(users).map((obj,i) =>
+        temps.push(obj.email)
+      ))
+
+    if (!userToBeAdded) {
+    }
+    else if((temps.includes(userToBeAdded)))
+    {
+
+      let docRef;
+
+      fire.firestore().collection("users").doc(fire.auth().currentUser.uid).get().then(function (doc) {
+
+        let accountType = doc.data().userInfo.accountType;
+
+        setAccountType(accountType);
+        if (accountType === "IoT Owner") {
+
+          let ref = doc.data().userInfo.ref;
+          docRef = fire.firestore().collection("users").doc(ref);
+
+        } else {
+          docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid);
+
+        }      
+
+        docRef.update({
+
+          [`devices.${currentDevice}.users`]: firebase.firestore.FieldValue.arrayUnion(userToBeAdded)
+      });
+    
+       
+      });
+      setShowModal(prev => !prev);
+
+      alert("You have successfully added user "+ userToBeAdded + " to device " + currentDevice)
+      setUserToBeAdded("")
+      setUserError("")
+    }else{
+      setUserError("This user doesn't exist")
+    }
+    
+  }
+
 
   const signUpWithEmailAndPassword = () => {
     clearErrors();
@@ -264,8 +329,13 @@ export const Modal = (props) => {
                 deviceName: deviceName,
                 created: new Date(),
               },
-              widgets: {}
+              widgets: {},
+
+              users: [fire.auth().currentUser.email]
+                
+              
             }
+           
           }
         };
 
@@ -466,22 +536,24 @@ const classes = useStyles();
             <Form >
               
             <h2>Users</h2>
+
+            <Form.Group >
+              <Form.Label style={{fontSize:15}}>Search User</Form.Label>
+              <Form.Control style = {{minWidth:400}} required  placeholder="Search a user..." value = {userToBeAdded} onChange={e => setUserToBeAdded(e.target.value)} />
+              <p style = {{color: "red", position:"absolute", top:125}} >{userError}</p>
+            </Form.Group>
  
-            <Form.Group style = {{position:"relative",  padding:0, margin: 0, top: 50 }} >
-              <Form.Label style={{fontSize:15}}>Account type</Form.Label>
-              <Form.Control required  as = "select" defaultValue = "Choose..." onChange={e => setAccountType(e.target.value)}>
-              <option value = "">Choose...</option>
-              {users && users.map(users =>
+              {/* {users && users.map(users =>
 
       Object.values(users).map((obj,i) =>(
                 <option>{obj.email}</option>
                 
+      )))} */}
 
-      )))}
-                </Form.Control>
-            </Form.Group>
+      
+              
 
-          <input style = {{width:200, height:70, position: "absolute", top: 350}} className = "save" type = "button" value ="Add User" onClick = {signUpWithEmailAndPassword} ></input>
+          <input style = {{width:200, height:70, position: "absolute", top: 350}} className = "save" type = "button" value ="Add User" onClick = {handleUserAdd} ></input>
 
            </Form>           
 

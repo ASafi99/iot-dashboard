@@ -34,6 +34,7 @@ export default function SimpleCard(props) {
   const classes = useStyles();
 
  const [created, setCreated] = useState(props.created)
+ const [accountType, setAccountType] = useState ("")
  
 
  const{device} = props
@@ -72,7 +73,7 @@ const sendData1 = (device) => {
         
     let accountType = doc.data().userInfo.accountType;
     let docRef
-
+    setAccountType(accountType)
     if(accountType=== "IoT Owner" || accountType === "IoT User" ){
 
       let ref = doc.data().userInfo.ref;
@@ -118,6 +119,16 @@ const sendData1 = (device) => {
         </Typography>
       </CardContent>
       <CardActions>
+      {accountType === "IoT Owner" || accountType === "IoT User" ? (
+        <>
+         <Button  onClick = {()=>{
+          sendData(device)
+            }}> {<FaEye/>}</Button>
+            <Button disabled >{<FiUsers/>}</Button>
+            <Button disabled >{<FaTrashAlt/>}</Button>
+            </>
+      ):(
+        <>
         <Button  onClick = {()=>{
          sendData(device)
            }}> {<FaEye/>}</Button>
@@ -125,8 +136,8 @@ const sendData1 = (device) => {
          sendData1(device)
            }}>{<FiUsers/>}</Button>
            <Button onClick = {() => {if(window.confirm('Are you sure you want to delete this device?'))removeField(device)}}>{<FaTrashAlt/>}</Button>
-           
-
+           </>   
+      )}
       </CardActions>
     </Card>
 

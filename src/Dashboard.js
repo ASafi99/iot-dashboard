@@ -52,7 +52,8 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
       docRef.onSnapshot((doc) => {
           
         
-        setDevices(Object.keys(doc.data().devices)); 
+        setDevices([doc.data().devices]); 
+
        
       })
 
@@ -75,16 +76,22 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
 
         let temps1 =[]
 
-        devices.map(da => {
+        devices.map((data, i) => 
+          Object.values(data).map((d) =>{
 
-              if(Object.keys(doc.data().devices[da].widgets).length>0){
-              temps1.push(doc.data().devices[da].widgets)
-              }
+           let test = d.deviceInfo.deviceName
+
+           if(d.users.includes(fire.auth().currentUser.email)){
+              if(Object.keys(doc.data().devices[test].widgets).length>0){
+              temps1.push(doc.data().devices[test].widgets)
+              console.log(temps1)
               
-              })
+            }
+          }
+        }))
   
               if(temps1.length>0){
-  
+                
                 setSwitchData(temps1)
                 setData(true)
           
@@ -93,7 +100,6 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
                 setData(false)
           
                 }
-
           })
         },[ref, devices])
 
@@ -123,7 +129,7 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
       }
        
              let switchCards = switchData.map(data =>
-
+        
               Object.values(data).map(obj => {
       return (
         <Col sm="4" style = {{margin:0, marginTop: 30}} >

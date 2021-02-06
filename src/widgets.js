@@ -131,16 +131,28 @@ export default function Widget (props) {
 
     const removeField = (widgetName) => {
 
-     
+      fire.firestore().collection("users").doc(fire.auth().currentUser.uid).get().then(function(doc) {
+        
+        let accountType = doc.data().userInfo.accountType;
+        let docRef
 
-      var docRef = fire.firestore().collection('users').doc(fire.auth().currentUser.uid);
+        if(accountType=== "IoT Owner" || accountType === "IoT User"){
+
+      let ref = doc.data().userInfo.ref;
+             docRef = fire.firestore().collection("users").doc(ref)
+          } else{
+            docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+
+          }
+     
 
       docRef.update({
 
         [`devices.${currentDevice}.widgets.${widgetName}`]: firebase.firestore.FieldValue.delete()
     });
 
-  }
+  })
+}
     
     const openModal = () => {
         setShowModal(prev => !prev);
@@ -189,7 +201,10 @@ export default function Widget (props) {
               <TableCell align="right">{obj.value}</TableCell>
               <TableCell align="right">{obj.location}</TableCell>
               <TableCell align="right">
-                <button style = {{backgroundColor: "red", color: "white" , borderRadius: "10px", width: 80}} onClick = {() => {if(window.confirm('Are you sure you want to Delete this widget?'))removeField(obj.widgetName)}}>Delete</button>
+              {accountType === "IoT User" ? (
+                <Button disabled style = {{ pointerEvents: 'none', backgroundColor: "red", color: "white" , borderRadius: "10px", width: 80}} >Delete</Button>
+              ):( <Button style = {{backgroundColor: "red", color: "white" , borderRadius: "10px", width: 80}} onClick = {() => {if(window.confirm('Are you sure you want to Delete this widget?'))removeField(obj.widgetName)}}>Delete</Button>)
+              }
                 </TableCell>
             </TableRow>
           )))}

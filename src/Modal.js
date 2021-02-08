@@ -141,6 +141,7 @@ export const Modal = (props) => {
  const { showModal, setShowModal, isWidget,obj, currentDevice, isUser, isManageUser } = props
 
  const [switchForm, setForm] = useState(false);
+ const [chartForm, setChartForm] = useState(false);
  const [validated, setValidated] = useState(false);
 
   const [deviceName, setDevice] = useState("");
@@ -357,6 +358,55 @@ export const Modal = (props) => {
     }
     setValidated(true);
   }
+
+const handleChartWidgetSave = () => {
+
+    if(!widgetName || !datasource || !locationName ){
+
+    }else{
+
+      let docRef
+
+      fire.firestore().collection("users").doc(fire.auth().currentUser.uid).get().then(function(doc) {
+          
+        let accountType = doc.data().userInfo.accountType;
+      
+        setAccountType(accountType)
+        if(accountType=== "IoT Owner"){
+  
+          let ref = doc.data().userInfo.ref;
+           docRef = fire.firestore().collection("users").doc(ref)
+           
+        } else{
+          docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.uid)
+  
+        }
+
+  const object = {
+      
+    devices:{
+      [currentDevice]:{
+        widgets:{
+        [widgetName]:{
+        widgetName: widgetName,
+        datasource: datasource,
+        location: locationName,
+        type: "Chart",
+        deviceName: currentDevice,
+      }}}
+    }
+  }
+
+        docRef.set(object, {merge:true})
+      })
+      setShowModal(prev => !prev)
+      alert("You have successfully added chart widget: "+ widgetName)
+      setWidget("")
+      setDatasource("")
+      setLocation("")
+      setValidated(false);
+          }}
+  
   const handleSensorWidgetSave = () => {
 
     if(!widgetName || !datasource || !locationName || !unit || !maxValue ){
@@ -382,7 +432,10 @@ export const Modal = (props) => {
 
        var rand = Math.floor(Math.random() * 101);  
 
-    const object = {
+      
+     
+
+     const object = {
       
       devices:{
         [currentDevice]:{
@@ -399,7 +452,8 @@ export const Modal = (props) => {
         }}}
       }
     }
-
+    
+     
     docRef.set(object, {merge:true})
       })
     setShowModal(prev => !prev)
@@ -664,8 +718,11 @@ const classes = useStyles();
               <h5>Widget Form</h5>
               {/* <span style = {{right:160, top: 20,position: "absolute", fontSize:10}}>Choose Widget Type:</span> */}
               <label style = {{position :"absolute", top:20}}>Choose widget type</label>
-              <Button variant = "contained"  color= "primary"  className={classes.button} startIcon = {<FaTemperatureHigh/>} onClick = {()=> setForm(true)} style = {{width:100, position:"relative", top:40, right: 110}}>Sensor</Button>
-              <Button variant = "contained"  color= "primary"  className={classes.button} startIcon = {<IoIosSwitch/>} onClick = {()=> setForm(false)} style = {{width:100, position:"relative", top:40, right: 110}}>Switch</Button>
+              <Button variant = "contained"  color= "primary"  className={classes.button} startIcon = {<FaTemperatureHigh/>} onClick = {()=> setForm(true)} style = {{width:100, position:"relative", top:40, right: 240}}>Sensor</Button>
+              <Button variant = "contained"  color= "primary"  className={classes.button} startIcon = {<IoIosSwitch/>} onClick = {()=> {setForm(false) 
+                setChartForm(false)}} style = {{width:100, position:"relative", top:40, right: 240}}>Switch</Button>
+              <Button variant = "contained"  color= "primary"  className={classes.button} startIcon = {<FaTemperatureHigh/>} onClick = {()=> setChartForm(true)} style = {{width:100, position:"relative", top:40, right: 240}}>Chart</Button>
+              
             
                          
               <ColoredLine color="lightGrey" />
@@ -719,6 +776,43 @@ const classes = useStyles();
           </>
 
            ):(
+
+            chartForm ?(
+              <>
+              <h5 style = {{top:15, position: "relative"}}>Sensor Chart Widget</h5>
+              <br/>
+              <br/>
+              
+              <Form.Group >
+              <Form.Label style={{fontSize:15}}>Widget Name</Form.Label>
+              <Form.Control style = {{maxWidth:600}} required size ='sm' placeholder="Enter widget name" onChange={e => setWidget(e.target.value)} />
+            </Form.Group>
+
+         
+
+          <Form.Group >
+            <Form.Label style={{fontSize:15}} >Data Source</Form.Label>
+            <Form.Control required size ='sm' style = {{maxWidth:600}} placeholder="Enter data source" onChange={e => setDatasource(e.target.value)}/>
+          </Form.Group>
+         
+          <Form.Row style = {{float: "left", width:650}}>
+
+        <Form.Group as={Col}>
+              <Form.Label style={{fontSize:15}}>Location</Form.Label>
+              <Form.Control required  size ='sm' as="select" defaultValue="Choose..."onChange={e => setLocation(e.target.value)} >
+                <option value = "">Choose...</option>
+                <option>Bedroom</option>
+                <option>Kitchen</option>
+              </Form.Control>
+            </Form.Group>
+          </Form.Row>
+          <input  onClick= {handleChartWidgetSave} className = "save" type = "submit" style = {{position: "static"}} value = "Save"></input>
+          
+
+
+          </>
+            ):(
+
              <>
               <h5 style = {{top:15, position: "relative"}}>Switch Widget</h5>
               <br/>
@@ -771,7 +865,7 @@ const classes = useStyles();
 
             <input  onClick= {handleSwitchWidgetSave} className = "save" type = "submit" style = {{position: "static",}} value = "Save"></input>
           </>
-            )}
+           ))}
            
             </Form>           
 
@@ -785,7 +879,7 @@ const classes = useStyles();
         </Background>
       ) : null
     
-    )))})
+    )))}
     </>
   );
   }

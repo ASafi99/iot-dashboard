@@ -16,6 +16,8 @@
     "bootstrap": "^4.5.3",
     "firebase": "^8.2.1",
     "firebase-admin": "^9.4.2",
+    "highcharts": "^9.0.0",
+    "highcharts-react-official": "^3.0.0",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.0",
     "react-browser-router": "^2.1.2",

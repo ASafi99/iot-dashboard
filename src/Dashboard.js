@@ -9,6 +9,8 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
     const [switchData, setSwitchData] = useState([]);
     const [devices, setDevices] = useState([])
     const [ref, setRef] = useState("")
+    const [values, setValues] = useState([11, 15, 10, 16, 10, 15])
+    const [time, setTime] = useState(Date.now());
     
 
     useEffect(() => {   
@@ -103,6 +105,23 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
           })
         },[ref, devices])
 
+        useEffect(() => {
+  
+
+          //const interval = setInterval(() => setValues, 1000);
+          const interval = setInterval(() => { let arr = values
+          arr.shift()
+          arr.push(randomNumber(10,20))
+          setValues(arr) 
+          setTime(Date.now())}, 5000);
+          return () => {
+            clearInterval(interval);
+          };
+        }, []);
+
+        function randomNumber(min, max) {  
+          return Math.floor(Math.random() * (max - min) + min); 
+      }  
         const h1 = {
             left: "0",
             lineHeight: "200px",
@@ -133,7 +152,7 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
               Object.values(data).map(obj => {
       return (
         <Col sm="4" style = {{margin:0, marginTop: 30}} >
-          <Card key = {obj.id} temp = {obj.deviceName}  widgetName = {obj.widgetName} onText = {obj.onText} offText = {obj.offText} type = {obj.type} maxValue = {obj.maxValue} value = {obj.value} unit = {obj.unit} /> 
+          <Card key = {obj.id} values = {values} temp = {obj.deviceName}  widgetName = {obj.widgetName} onText = {obj.onText} offText = {obj.offText} type = {obj.type} maxValue = {obj.maxValue} value = {obj.value} unit = {obj.unit} /> 
         </Col>
       )
               }

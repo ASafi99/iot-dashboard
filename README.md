@@ -26,4 +26,4 @@ This section contains the current requirements for the system made in this proje
 - [X] Admin is able to choose which  share and not share configured devices with users accounts created
 - [ ] Time-based trigger functionality for switch widget
 - [ ] Alarm functionality for sensors (once max allowable value is exceeded)
-- [ ] Time-series graph widget for sensors types
+- [X] Time-series graph widget for sensors types

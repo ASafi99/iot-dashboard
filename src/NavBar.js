@@ -109,11 +109,13 @@ export default function Header() {
       }
 
       const [accountType, setAccountType] = useState ("")
+      const [email, setEmail] = useState ("")
       useEffect(() => {   
         
         fire.firestore().collection("users").doc(fire.auth().currentUser.uid).get().then(function(doc) {
 
           setAccountType(doc.data().userInfo.accountType)
+          setEmail(doc.data().userInfo.email)
       
       })
     })
@@ -128,7 +130,7 @@ export default function Header() {
           <Toolbar className={toolbar}>
                 
                 <div>{headerButtons()}</div>
-                <p style={{ position: "absolute", right:100, fontWeight: 700, bottom:5}}>Logged in as: {accountType}</p>
+                <p style={{ position: "absolute", right:100, fontWeight: 700, bottom:5}}>Logged in as: {email} ({accountType})</p>
             </Toolbar> 
                             
         </AppBar> 

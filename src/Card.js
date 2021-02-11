@@ -11,87 +11,84 @@ export default function DashboardCards(props) {
 
     const [switchState, setSwitchState] = useState(false);
    
+  
 
-    function randomNumber(min, max) {  
-      return Math.random() * (max - min) + min; 
-  }  
+    const options={
 
-    // if(type === "Sensor"){
-    //   setIsSwitch(true)
-    // }else if (type === "Switch") {
-    //   setIsSwitch(false)
-    // }
-    
-    const options = {
-     
-      chart: {
-        animation: false,
-        backgroundColor: 'transparent',
-        type: 'areaspline',
-        spacingBottom: 50,
-        spacingTop: 0,
-        spacingLeft: 0,
-        spacingRight: 0,
-      },
-
-      tooltip: {
-        enable: null
-      },
-      title: {
-        text: null
-      },
-
-      yAxis: {
-        min: 0,
-        gridLineWidth: 0,
-        title: {
-          text: ''
-        },
-        labels: {
-          enabled: false
-        },
-        stackLabels: {
-          enabled: true,
-        }
-      },
-      xAxis: {
-       visible: false,
-        
-      },
-
-      plotOptions: {
-        animation: false,
-        areaspline: {
-          fillOpacity: 0,
-          marker: {
-            enabled: false
+    chart: {
+      events: {
+          redraw: function () {
+            const self = this;
+            setTimeout (function () {
+                self.reflow();
+            }, 10);
           }
-        }
       },
-      legend : {
-        enabled:false,
-      },
-      credits: {
+      height:"50%",
+      backgroundColor: 'rgba(255, 255, 255, 0.0)',
+    },
+    credits: {
         enabled: false
+    },
+    title: {
+        text: null
+    },
+    yAxis: {
+        title: {
+            text: null,
+        },
+        visible: false
+    },
+    xAxis: {
+      visible: false,
+      type: 'datetime',
+      dateTimeLabelFormats: {
+        minute: '%H:%M',
       },
-     
-        series: [{
-          animation: false,
-          name: 'Temperature',
-          data: values,
       
-          stops: [
-              [0, 'rgba(0,0,0,.3)'],
-              [1, 'rgba(0,0,0,.05)']
-            ]
-          
+    },
+    legend: {
+        layout: 'horizontal',
+        align: 'left',
+        verticalAlign: 'top',
+    },
+    tooltip: {
+      useHTML: true
+    },
+    plotOptions: {
+        series: {
+            label: {
+                connectorAllowed: false
+            },
+            pointStart: new Date().getTime(),
+        }
+    },
+    series: [{
+        name: values.unit,
+        data: values.series,
+        type: 'spline',
+        color: 'blue',
+        showInLegend: false,
+        marker: {
+          enabled: false,
+        }
+    }],
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 500,
+                maxHeight:50
+            },
+            chartOptions: {
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                }
+            }
         }]
-      }
-  
-  
-      
-        
-      
+    }
+  }
 
     return(
       <>
@@ -125,7 +122,7 @@ export default function DashboardCards(props) {
           <Card.Subtitle style = {{ backgroundColor:"blue", color:"white", borderRadius: "6px"}}>{temp}</Card.Subtitle>
           <br/>
     
-          <p style = {{position: "absolute",float:"left"}}>Temperature: {values.slice(-1)[0]}°C </p>
+          <p style = {{position: "absolute",float:"left"}}>Temperature: {values.series.slice(-1)[0][1]}°C </p>
             <div style = {{ width: "100%",
           position: "relative",
           height: "150px",

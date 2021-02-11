@@ -8,9 +8,34 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
     const [isData, setData] = useState(false);
     const [switchData, setSwitchData] = useState([]);
     const [devices, setDevices] = useState([])
-    const [ref, setRef] = useState("")
-    const [values, setValues] = useState([11, 15, 10, 16, 10, 15])
+    const [ref, setRef] = useState("")   
     const [time, setTime] = useState(Date.now());
+
+
+    function generateMockSeries() {
+      const series = [];
+      for (let i = 20; i >= 1; i = i - 2) {
+          series.push([previousSeconds(i), Math.floor(Math.random() * 8 + 30)]);
+      }
+      return series;
+    }
+    
+    function previousSeconds(s) {
+      return new Date().getTime() - (s * 1000);
+    }
+
+    //const [values, setValues] = useState({})
+
+    // setValues(generateMockSeries())
+
+    let values = {
+      title: 'Bedroom Tempreture',
+      subTitle: 'Show Today Live Statistics',
+      for: 'Tempreture',
+      unit: '°C',
+      chartColor: 'orange',
+      series: generateMockSeries()
+    };
     
 
     useEffect(() => {   
@@ -107,13 +132,11 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
 
         useEffect(() => {
   
-
           //const interval = setInterval(() => setValues, 1000);
-          const interval = setInterval(() => { let arr = values
-          arr.shift()
-          arr.push(randomNumber(10,20))
-          setValues(arr) 
-          setTime(Date.now())}, 5000);
+          const interval = setInterval(() => { 
+         
+          values.series.push([new Date().getTime(), Math.floor(Math.random() * 8 + 30)])
+          setTime(Date.now())}, 2000);
           return () => {
             clearInterval(interval);
           };

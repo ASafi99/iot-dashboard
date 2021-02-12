@@ -16,14 +16,7 @@ export default function DashboardCards(props) {
     const options={
 
     chart: {
-      events: {
-          redraw: function () {
-            const self = this;
-            setTimeout (function () {
-                self.reflow();
-            }, 10);
-          }
-      },
+    
       height:"50%",
       backgroundColor: 'rgba(255, 255, 255, 0.0)',
     },
@@ -60,12 +53,12 @@ export default function DashboardCards(props) {
             label: {
                 connectorAllowed: false
             },
-            pointStart: new Date().getTime(),
+            
         }
     },
     series: [{
-        name: values.unit,
-        data: values.series,
+        name: '°C',
+        data: values,
         type: 'spline',
         color: 'blue',
         showInLegend: false,
@@ -122,7 +115,7 @@ export default function DashboardCards(props) {
           <Card.Subtitle style = {{ backgroundColor:"blue", color:"white", borderRadius: "6px"}}>{temp}</Card.Subtitle>
           <br/>
     
-          <p style = {{position: "absolute",float:"left"}}>Temperature: {values.series.slice(-1)[0][1]}°C </p>
+          <p style = {{position: "absolute",float:"left"}}>Temperature: {values.slice(-1)[0][1]}°C </p>
             <div style = {{ width: "100%",
           position: "relative",
           height: "150px",

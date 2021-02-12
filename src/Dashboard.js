@@ -10,6 +10,8 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
     const [devices, setDevices] = useState([])
     const [ref, setRef] = useState("")   
     const [time, setTime] = useState(Date.now());
+    const [values,setValues] = useState([])
+  
 
 
     function generateMockSeries() {
@@ -28,15 +30,14 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
 
     // setValues(generateMockSeries())
 
-    let values = {
-      title: 'Bedroom Tempreture',
-      subTitle: 'Show Today Live Statistics',
-      for: 'Tempreture',
-      unit: '°C',
-      chartColor: 'orange',
-      series: generateMockSeries()
-    };
+   
+    //  const values = {
     
+    //   for: 'Temperature',
+    //   unit: '°C',
+    //   series: generateMockSeries()
+    // };
+  
 
     useEffect(() => {   
       
@@ -78,9 +79,7 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
     
       docRef.onSnapshot((doc) => {
           
-        
         setDevices([doc.data().devices]); 
-
        
       })
 
@@ -131,16 +130,30 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
         },[ref, devices])
 
         useEffect(() => {
+
+          if(values.length>1){
+            
+          }else{
+          setValues(generateMockSeries())
+          }
+        },[values.length]);
+
+        useEffect(() => {
+
+         
   
           //const interval = setInterval(() => setValues, 1000);
           const interval = setInterval(() => { 
+
+            values.shift()
          
-          values.series.push([new Date().getTime(), Math.floor(Math.random() * 8 + 30)])
-          setTime(Date.now())}, 2000);
+          values.push([new Date().getTime(), Math.floor(Math.random() * 8 + 30)])
+          setTime(Date.now())
+        }, 2000);
           return () => {
             clearInterval(interval);
           };
-        }, []);
+        }, [values]);
 
         function randomNumber(min, max) {  
           return Math.floor(Math.random() * (max - min) + min); 

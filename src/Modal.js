@@ -585,9 +585,9 @@ const classes = useStyles();
       showModal ? (
         <Background onClick={closeModal} ref={modalRef}>
         <animated.div style={animation}>
-          <WidgetModalWrapper showModal={showModal}>
+          <WidgetModalWrapper style = {{height: 300}} showModal={showModal}>
             <ModalContent>        
-            <Form >
+            <Form  >
               
             <h2>Users</h2>
 
@@ -604,10 +604,7 @@ const classes = useStyles();
                 
       )))} */}
 
-      
-              
-
-          <input style = {{width:200, height:70, position: "absolute", top: 350}} className = "save" type = "button" value ="Add User" onClick = {handleUserAdd} ></input>
+          <input style = {{width:150, height:50, position: "absolute", top: 170}} className = "save" type = "button" value ="Add User" onClick = {handleUserAdd} ></input>
 
            </Form>           
 

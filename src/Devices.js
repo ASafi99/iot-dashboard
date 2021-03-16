@@ -11,13 +11,11 @@ import DeviceUsers from './DeviceUsers'
 
 const title = {
 
-    right: "500px",
-    marginTop: "-150px",
-    position: "absolute",
-    textAlign: "center",
-    top: "50%",
-    width: "100%",
+    float: "left",
+    marginLeft: "100px",
+    marginTop: "150px",
     fontSize:"30px",
+    fontWeight: "bold",
 
 
 }
@@ -85,10 +83,8 @@ function Devices (){
      /* Create reference to messages in Firebase Database */
         
          docRef.onSnapshot((doc) => {
-        // devices.push(doc.data())
+       
          setDevices([doc.data().devices]); 
-
-         //setTest([doc.data().devices])
          
     })  
 
@@ -97,12 +93,9 @@ function Devices (){
         
     },[currentDevice])
 
-
         let deviceCards = showDevices.map((data, i) =>
          
             Object.values(data).map((d) =>{
-
-              //console.log(d.users.includes(fire.auth().currentUser.email))
               
               if(d.users.includes(fire.auth().currentUser.email)){
               
@@ -120,8 +113,9 @@ function Devices (){
       gridContainer: {
         
         margin:0,
-       marginTop: 150 ,
-       position: "absolute",
+       marginTop: 190 ,
+       position: "fixed",
+       marginLeft:20,
        width:"inherit",
        zIndex:-10,
        minWidth:1200

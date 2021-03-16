@@ -2,6 +2,7 @@ import React, { Component, useState, useEffect} from 'react';
 import {fire} from './fire';
 import Card from './Card';
 import {CardDeck, Container, Row, Col} from "react-bootstrap";
+import Alert from 'react-bootstrap/Alert'
 
   export default function Dashboard () {
     
@@ -171,17 +172,15 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
 
         const title = {
 
-          right: "500px",
-          marginTop: "-150px",
-          position: "absolute",
-          textAlign: "center",
-          top: "50%",
-          width: "100%",
+          float: "left",
+          marginLeft: "100px",
+          marginTop: "150px",
           fontSize:"30px",
-          zIndex: -1
+          fontWeight: "bold",
       
       
       }
+      
        
              let switchCards = switchData.map(data =>
         
@@ -197,13 +196,17 @@ import {CardDeck, Container, Row, Col} from "react-bootstrap";
        
         return(
           <>
+
+<Alert style = {{width:"30%", right:160,top:140 ,position:"absolute"}} variant={"primary"} >
+    Test has exceeded threshold value of 20!
+  </Alert>
           <h2 style = {title} >Dashboard </h2>
           {!isData ? (
             <h1 style = {h1}>
                      No data to display
             </h1>
             ): (
-          <Container fluid style = {{margin:0, marginTop: 150 }}>
+          <Container fluid style = {{position: "fixed",  margin:0, marginTop: 180 }}>
           <Row style = {{}} >
           <CardDeck style={{ minWidth: "100%", maxWidth:"100%",float: "left"}}>
             {switchCards}

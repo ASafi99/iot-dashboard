@@ -28,19 +28,18 @@ export default function DeviceUsers (props) {
         zIndex: -2
      }
 
-    const title = {
+   
+     const title = {
 
-        right: "500px",
-        marginTop: "-150px",
-        position: "absolute",
-        textAlign: "center",
-        top: "50%",
-        width: "100%",
-        fontSize:"30px",
-    
-    
-    }
-
+      float: "left",
+      marginLeft: "100px",
+      marginTop: "150px",
+      fontSize:"30px",
+      fontWeight: "bold",
+  
+  
+  }
+  
     const buttonPos = {
 
         position: "absolute",

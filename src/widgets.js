@@ -50,15 +50,14 @@ export default function Widget (props) {
 
     const title = {
 
-        right: 400,
-        marginTop: "-150px",
-        position: "fixed",
-        textAlign: "center",
-        top: "50%",
-        width: "100%",
-        fontSize:"30px",
-    
-    }
+      float: "left",
+      marginLeft: "100px",
+      marginTop: "150px",
+      fontSize:"30px",
+      fontWeight: "bold",
+  
+  
+  }
 
     const buttonPos = {
 
@@ -119,7 +118,6 @@ export default function Widget (props) {
                }else{
                setData(false)
               }
-
              
     })
   

@@ -125,9 +125,52 @@
     background: #3a2b58;
   }
 
+  button.privacy {
+    background: none!important;
+    border: none;
+    /*optional*/
+    font-family: arial, sans-serif;
+    /*input has OS specific font-family*/
+    color: #069;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
   h4{
     color: white;
     font-size: 22px;
     line-height: 1;
 
   }
+
+  h6{
+    color: white;
+    font-size: 12px;
+    line-height: 1;
+
+  }
+
+  .popup {  
+    position: fixed;  
+    width: 1500px;  
+    height: 800px;  
+    top: 0;  
+    left: 0;  
+    right: 0;  
+    bottom: 0;  
+    margin:0;
+    background-color: rgba(0,0,0, 0.5);  
+    z-index: 10;
+  }  
+  .inner {  
+    position: absolute;  
+    left: 25%;  
+    right: 25%;  
+    top: 5%;  
+    bottom: 25%;  
+    margin: auto;  
+    border-radius: 20px;  
+    background: white;  
+  }
+
+

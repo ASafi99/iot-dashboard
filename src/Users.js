@@ -21,17 +21,18 @@ export default function Users () {
         },
       });
 
-    const title = {
+   
+      const title = {
 
-        right: "500px",
-        marginTop: "-150px",
-        position: "absolute",
-        textAlign: "center",
-        top: "50%",
-        width: "100%",
+        float: "left",
+        marginLeft: "100px",
+        marginTop: "150px",
         fontSize:"30px",
+        fontWeight: "bold",
+    
+    
     }
-
+    
     const pos = {
 
         right: "100px",

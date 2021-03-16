@@ -44,7 +44,7 @@ const ModalWrapper = styled.div`
 
 const WidgetModalWrapper = styled.div`
   width: 700px;
-  height: 460px;
+  height: 520px;
   box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
   background: #fff;
   color: #000;
@@ -566,7 +566,7 @@ const handleChartWidgetSave = () => {
         style={{
             color: color,
             backgroundColor: color,
-            top: 20,
+            top: 50,
             position:'relative',
             right: 20
 
@@ -714,18 +714,20 @@ const classes = useStyles();
                 
               <h5>Widget Form</h5>
               {/* <span style = {{right:160, top: 20,position: "absolute", fontSize:10}}>Choose Widget Type:</span> */}
-              <label style = {{position :"absolute", top:20}}>Choose widget type</label>
-              <Button variant = "contained"  color= "primary"  className={classes.button} startIcon = {<FaTemperatureHigh/>} onClick = {()=> setForm(true)} style = {{width:100, position:"relative", top:40, right: 240}}>Sensor</Button>
+              <label style = {{position :"absolute", fontWeight: "bold", top:30}}>Choose widget type</label>
+              <Button variant = "contained"  color= "primary"  className={classes.button} startIcon = {<FaTemperatureHigh/>} onClick = {()=> setForm(true)} style = {{width:100, position:"relative", top:60, right: 240}}>Sensor</Button>
               <Button variant = "contained"  color= "primary"  className={classes.button} startIcon = {<IoIosSwitch/>} onClick = {()=> {setForm(false) 
-                setChartForm(false)}} style = {{width:100, position:"relative", top:40, right: 240}}>Switch</Button>
-              <Button variant = "contained"  color= "primary"  className={classes.button} startIcon = {<FaTemperatureHigh/>} onClick = {()=> setChartForm(true)} style = {{width:100, position:"relative", top:40, right: 240}}>Chart</Button>
+                setChartForm(false)}} style = {{width:100, position:"relative", top:60, right: 240}}>Switch</Button>
+              <Button variant = "contained"  color= "primary"  className={classes.button} startIcon = {<FaTemperatureHigh/>} onClick = {()=> setChartForm(true)} style = {{width:100, position:"relative", top:60, right: 240}}>Chart</Button>
               
             
                          
               <ColoredLine color="lightGrey" />
              
           {switchForm ? (
-           <>
+
+           <div style ={{top:40, position: "relative"}}>
+
              <h5 style = {{top:15, position: "relative"}}>Sensor Widget</h5>
               <br/>
               <br/>
@@ -770,12 +772,13 @@ const classes = useStyles();
           </Form.Row>
           <input  onClick= {handleSensorWidgetSave} className = "save" type = "submit" style = {{position: "static"}} value = "Save"></input>
           
-          </>
+          </div>
 
            ):(
 
             chartForm ?(
-              <>
+              <div style ={{top:40, position: "relative"}}>
+
               <h5 style = {{top:15, position: "relative"}}>Sensor Chart Widget</h5>
               <br/>
               <br/>
@@ -807,10 +810,11 @@ const classes = useStyles();
           
 
 
-          </>
+          </div>
             ):(
 
-             <>
+              <div style ={{top:40, position: "relative"}}>
+
               <h5 style = {{top:15, position: "relative"}}>Switch Widget</h5>
               <br/>
               <br/>
@@ -861,7 +865,7 @@ const classes = useStyles();
             </Form.Row>
 
             <input  onClick= {handleSwitchWidgetSave} className = "save" type = "submit" style = {{position: "static",}} value = "Save"></input>
-          </>
+          </div>
            ))}
            
             </Form>           

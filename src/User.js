@@ -6,13 +6,14 @@ import "./User.css";
 import App from "./App";
 
 
-function User() {
+export default function User() {
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [hasAccount, setHasAccount] = useState(false);
+  const [test, setTest] = useState(false);
 
  
 
@@ -89,20 +90,22 @@ function User() {
       });
   };
 
-  function handleLogOut() {
+    const handleLogOut = () => {
+
     console.log("logged out")
     fire.auth().signOut();
-   
+    return true;
   }
 
   const authListener = () => {
     fire.auth().onAuthStateChanged((user) => {
       clearInputs();
       if (user) {
-
+        setTest(true)
         setUser(user);
 
       } else {
+        setTest(false)
         setUser("");
       }
     });
@@ -114,7 +117,7 @@ function User() {
 
   return (
     <div className="App">
-        
+        <p>{test}</p>
         {user ? (
           <>           
               <App handleLogOut={handleLogOut} /> 
@@ -138,4 +141,4 @@ function User() {
   );
 }
 
-export default User;
+

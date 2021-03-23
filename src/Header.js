@@ -1,6 +1,6 @@
 import { AppBar, Toolbar, Typography, makeStyles, Button } from "@material-ui/core";
 import React from "react";
-import { Link as RouterLink } from "react-router-dom";
+import {BrowserRouter, Link as RouterLink } from "react-router-dom";
 
 
 export default function Header({handleLogOut}) {
@@ -82,6 +82,7 @@ export default function Header({handleLogOut}) {
   return (
     <>
     <header>
+      <BrowserRouter>
       <AppBar className={header}>
           <Toolbar className={toolbar}>
               <Typography className = {logo}>
@@ -92,6 +93,7 @@ export default function Header({handleLogOut}) {
             </Toolbar>
                   
         </AppBar>
+        </BrowserRouter>
     </header>
     </>
   );

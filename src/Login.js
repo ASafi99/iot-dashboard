@@ -18,34 +18,36 @@ const Login = (props) => {
         <section className="login">
             
             <div className= "loginContainer">
-            <h4>Welcome to IOT Dashboard</h4>
+            <h4 style = {{color:"white"}}>Welcome to IOT Dashboard</h4>
 
-            <h6>Please sign in or create an account to continue!</h6>
-                <label>Username</label>
+            <h6 style = {{color:"white"}}>Please login or create an account to continue!</h6>
+                <label for = "Username">Username</label>
                 <input 
                 type = "text" 
+                id = "Username"
                 autoFocus 
                 required 
                 value = {email}
                 onChange ={(e) => setEmail(e.target.value)}/>
             
-            <p className = "errorMsg">{emailError}</p>
+            <p className = "errorMsg" data-testid = "emailerror">{emailError}</p>
             
-            <label>Password</label>
+            <label for = "Password">Password</label>
                 <input 
                 type = "password" 
+                id = "Password"
                 required 
                 value = {password} 
                 onChange ={(e) => setPassword(e.target.value)}/>
 
-                <p className = "errorMsg">{passwordError}</p>
+                <p className = "errorMsg" data-testid = "pwerror">{passwordError}</p>
 
                 <div className = "btnContainer">
                     {hasAccount ?(
 
                         <>
                         
-                         <ButtonLoader handleLogin = {handleLogin} text = "Signing In" text1 = "Sign In"/>
+                         <button onClick = {handleLogin} text = "Signing In" text1 = "Sign In" id = "but"  >Sign In</button>
                         <p>Don't have an account? 
                             <span onClick = {() => setHasAccount (!hasAccount)}>Sign Up </span>
                         </p>
@@ -53,7 +55,7 @@ const Login = (props) => {
 
                     ) :(
                         <>
-                        <h6>By clicking on "Signup" below, you are agreeing to the <button className = "privacy" onClick = {togglePopup}>Privacy Policy</button> </h6>
+                        <h6 style = {{color:"white"}}>By clicking on "Signup" below, you are agreeing to the <button className = "privacy" onClick = {togglePopup}>Privacy Policy</button> </h6>
                         {show ?  
                         <Policy  
                                  
@@ -63,7 +65,7 @@ const Login = (props) => {
                         }  
                         <div style = {{position: "relative", top:20}}>
                         
-                         <ButtonLoader handleLogin = {handleSignup} text = "Signing Up" text1 = "Sign Up"/>
+                         <button onClick = {handleLogin} text = "Signing Up" text1 = "Sign Up"  id = "but" value = "Sign Up">Sign Up</button>
                         <p>Have an account ? 
                             <span onClick = {() => setHasAccount (!hasAccount)}>Sign in</span>
                         </p>

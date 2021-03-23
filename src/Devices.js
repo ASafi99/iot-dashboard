@@ -134,7 +134,7 @@ function Devices (){
         <>
         {showPage ? (          
              <>           
-            <h2 style = {title} >Devices </h2>
+            <h2 style = {title} >Devices</h2>
 
             {accountType === "IoT Owner" || accountType === "IoT User" ? (
            <OverlayTrigger placement="bottom" overlay={<Tooltip id="tooltip-disabled">Only IoT Admin are able to add devices!</Tooltip>}>
@@ -146,7 +146,7 @@ function Devices (){
            </span>
          </OverlayTrigger>
             ) :(
-            <Button onClick={openModal} variant="primary" style = {pos}>Add device</Button>
+            <Button onClick={openModal} variant="primary" style = {pos} id = "add-device">Add device</Button>
             )}
              <Modal showModal={showModal} setShowModal={setShowModal} isWidget ={true} currentDevice = {currentDevice} /> 
            

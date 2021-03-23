@@ -197,9 +197,9 @@ import Alert from 'react-bootstrap/Alert'
         return(
           <>
 
-<Alert style = {{width:"30%", right:160,top:140 ,position:"absolute"}} variant={"primary"} >
+{/* <Alert style = {{width:"30%", right:160,top:140 ,position:"absolute"}} variant={"primary"} >
     Test has exceeded threshold value of 20!
-  </Alert>
+  </Alert> */}
           <h2 style = {title} >Dashboard </h2>
           {!isData ? (
             <h1 style = {h1}>

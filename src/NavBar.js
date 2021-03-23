@@ -1,6 +1,6 @@
 import { AppBar, Toolbar, makeStyles, Button } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { Link,  BrowserRouter, Route, Switch, HashRouter, NavLink } from "react-router-dom";
+import { Route,  HashRouter, NavLink } from "react-router-dom";
 import {MdDashboard, MdDevicesOther, MdLocationSearching} from "react-icons/md";
 import {FiUsers} from "react-icons/fi"
 import Dashboard from "./Dashboard";

@@ -136,19 +136,7 @@
     cursor: pointer;
   }
 
-  h4{
-    color: white;
-    font-size: 22px;
-    line-height: 1;
-
-  }
-
-  h6{
-    color: white;
-    font-size: 12px;
-    line-height: 1;
-
-  }
+ 
 
   .popup {  
     position: fixed;  

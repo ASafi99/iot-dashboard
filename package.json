@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@firebase/testing": "^0.20.11",
     "@fortawesome/fontawesome-free": "^5.15.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
     "@fortawesome/free-solid-svg-icons": "^5.15.2",
@@ -16,6 +17,7 @@
     "bootstrap": "^4.5.3",
     "firebase": "^8.2.1",
     "firebase-admin": "^9.4.2",
+    "firebase-tools": "^9.6.1",
     "highcharts": "^9.0.0",
     "highcharts-react-official": "^3.0.0",
     "react": "^17.0.1",

@@ -1,0 +1,47 @@
+.switchOnButton {
+  background-color: rgba(39, 39, 240, 0.959);
+  border: 2px solid white;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  width:60%; 
+  height:150px;
+  border-radius: 50%;
+}
+
+.switchOffButton {
+    background-color: white;
+    border: 2px solid blue;
+    color: blue;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    width:60%; 
+    height:150px;
+    border-radius: 50%;
+  }
+
+  .sensorButton {
+    background-color: rgba(39, 39, 240, 0.959);
+    border: 50 solid rgba(90, 33, 245, 0.836);
+    color: white;
+    padding: 50px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 30px;
+    margin: 4px 2px;
+    width:60%; 
+    height:150px;
+    border-radius: 50%;
+  }
+  
+
+  

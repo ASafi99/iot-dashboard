@@ -118,7 +118,11 @@ export default function Header() {
           setEmail(doc.data().userInfo.email)
       
       })
+<<<<<<< HEAD
     },[])
+=======
+    })
+>>>>>>> 1b65389a5d16572d01440e110d72057c61f6caae
 
       
   return (

@@ -174,10 +174,18 @@ import Alert from 'react-bootstrap/Alert'
 
           float: "left",
           marginLeft: "100px",
+<<<<<<< HEAD
           fontSize:"30px",
           fontWeight: "bold",
           width: 0,
          
+=======
+          marginTop: "150px",
+          fontSize:"30px",
+          fontWeight: "bold",
+      
+      
+>>>>>>> 1b65389a5d16572d01440e110d72057c61f6caae
       }
       
        
@@ -185,7 +193,11 @@ import Alert from 'react-bootstrap/Alert'
         
               Object.values(data).map(obj => {
       return (
+<<<<<<< HEAD
         <Col sm="4" style = {{margin:0, marginTop: 50}} >
+=======
+        <Col sm="4" style = {{margin:0, marginTop: 30}} >
+>>>>>>> 1b65389a5d16572d01440e110d72057c61f6caae
           <Card key = {obj.id} values = {values} temp = {obj.deviceName}  widgetName = {obj.widgetName} onText = {obj.onText} offText = {obj.offText} type = {obj.type} maxValue = {obj.maxValue} value = {obj.value} unit = {obj.unit} /> 
         </Col>
       )
@@ -205,7 +217,11 @@ import Alert from 'react-bootstrap/Alert'
                      No data to display
             </h1>
             ): (
+<<<<<<< HEAD
           <Container fluid style = {{ margin:0, marginTop: 150 }}>
+=======
+          <Container fluid style = {{position: "fixed",  margin:0, marginTop: 180 }}>
+>>>>>>> 1b65389a5d16572d01440e110d72057c61f6caae
           <Row style = {{}} >
           <CardDeck style={{ minWidth: "100%", maxWidth:"100%",float: "left"}}>
             {switchCards}
